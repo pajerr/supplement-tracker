@@ -7,17 +7,17 @@ pipeline {
         GO119MODULE = 'on'
     }
         stages {
+            /*
             stage('Checkout git') {
                 steps {
                     git branch: 'main',
                         credentialsId: 'github-ssh',
                         url: 'git@github.com:pajerr/supplement-tracker'
                 }
-            }
+            }*/
             
             stage("unit-test") {
                 steps {
-                    cd draft
                     echo 'UNIT TEST EXECUTION STARTED'
                     sh 'make unit-tests'
                 }
@@ -25,7 +25,7 @@ pipeline {
             
             stage('Run') {
                 steps {
-                    sh "go run draft/main.go"
+                    sh "go run main.go"
                 }
             }
         }
