@@ -1,0 +1,33 @@
+pipeline {
+    agent any 
+    tools {
+        go 'go-1.19'
+    }
+    environment {
+        GO119MODULE = 'on'
+    }
+        stages {
+            stage('Checkout git') {
+                steps {
+                    git branch: 'main',
+                        credentialsId: 'github-ssh',
+                        url: 'git@github.com:pajerr/supplement-tracker'
+                }
+            }
+            
+            stage("unit-test") {
+                steps {
+                    cd draft
+                    echo 'UNIT TEST EXECUTION STARTED'
+                    sh 'make unit-tests'
+                }
+            }
+            
+            stage('Run') {
+                steps {
+                    sh "go run draft/main.go"
+                }
+            }
+        }
+
+}
