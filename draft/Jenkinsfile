@@ -15,7 +15,12 @@ pipeline {
                         url: 'git@github.com:pajerr/supplement-tracker'
                 }
             }*/
-            
+             stage('Run') {
+                steps {
+                    sh "make run"
+                }
+            }           
+
             stage("unit-test") {
                 steps {
                     echo 'UNIT TEST EXECUTION STARTED'
@@ -23,9 +28,9 @@ pipeline {
                 }
             }
             
-            stage('Run') {
+            stage('Build') {
                 steps {
-                    sh "go run main.go"
+                    sh "make build"
                 }
             }
         }
