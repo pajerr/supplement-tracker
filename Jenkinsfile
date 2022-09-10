@@ -15,11 +15,13 @@ pipeline {
                         url: 'git@github.com:pajerr/supplement-tracker'
                 }
             }*/
+            /*
              stage('Run') {
                 steps {
+                    sh "ls -l"
                     sh "make run"
                 }
-            }           
+            }*/           
 
             stage("unit-test") {
                 steps {
