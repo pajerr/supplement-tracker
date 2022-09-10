@@ -1,6 +1,6 @@
 run:
-   go run main.go
+	go run main.go	
 build:
-	go build -o bin/main main.go
+	go build -o bin/main main.go	
 unit-tests:
-   go test -v ./...
+	go test -v ./...	
