@@ -6,8 +6,15 @@ import (
 	"strings"
 )
 
-type SupplementStore interface {
-	GetSupplementDosage(name string) int
+type SupplementDataStore interface {
+	//this differs from tutorials name string since Im using struct to get data
+	GetSupplementDosage(supplement Supplement) int
+}
+
+//allows us to use the SupplementDataStore interface in the handler
+//for example to store.GetSupplelementDosage to get supplements dosage
+type supplementsHandler struct {
+	store SupplementDataStore
 }
 
 type Supplement struct {
@@ -16,7 +23,8 @@ type Supplement struct {
 	Unit   string `json:"Unit"`
 }
 
-func supplementsHandler(w http.ResponseWriter, r *http.Request) {
+//Refactored to use SupplementDataStore interface
+func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	//hardcoded test data
 	testVitaminC := Supplement{Name: "Vitamin C", Dosage: 500, Unit: "mg"}
 	testMagnesium := Supplement{Name: "Magnesium", Dosage: 400, Unit: "mg"}
@@ -30,11 +38,11 @@ func supplementsHandler(w http.ResponseWriter, r *http.Request) {
 		if supplement == "vitamin-c" {
 			w.WriteHeader(http.StatusOK)
 			//write dosage of Vitamin C to the response
-			fmt.Fprintf(w, "%v", GetSupplementDosage(testVitaminC))
+			fmt.Fprintf(w, "%v", s.store.GetSupplementDosage(testVitaminC))
 		} else if supplement == "magnesium" {
 			w.WriteHeader(http.StatusOK)
 			//write dosage of Magnesium to the response
-			fmt.Fprintf(w, "%v", GetSupplementDosage(testMagnesium))
+			fmt.Fprintf(w, "%v", s.store.GetSupplementDosage(testMagnesium))
 		} else {
 			w.WriteHeader(http.StatusNotFound)
 			fmt.Fprintf(w, "Supplement not found")

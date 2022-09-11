@@ -8,12 +8,17 @@ import (
 )
 
 func TestSupplementDosages(t *testing.T) {
+	//create a new instance of our supplementsHandler and then call its method ServeHTTP
+	server := &supplementsHandler{}
+
 	t.Run("Return Vitamin C dosage", func(t *testing.T) {
 		//Use helper function to create a new GET request for Vitamin C
 		request := newGetSupplementDosage("vitamin-c")
 		response := httptest.NewRecorder()
 
-		supplementsHandler(response, request)
+		//we pass in the response and request to the ServeHTTP method from our supplementsHandler
+		server.ServeHTTP(response, request)
+
 		assertResponseBody(t, response.Body.String(), "500")
 	})
 
@@ -22,7 +27,8 @@ func TestSupplementDosages(t *testing.T) {
 		request := newGetSupplementDosage("magnesium")
 		response := httptest.NewRecorder()
 
-		supplementsHandler(response, request)
+		server.ServeHTTP(response, request)
+
 		assertResponseBody(t, response.Body.String(), "400")
 	})
 
