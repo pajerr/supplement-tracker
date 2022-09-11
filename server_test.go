@@ -7,9 +7,28 @@ import (
 	"testing"
 )
 
+//A map is a quick and easy way of making a stub key/value store for our tests
+type StubSupplementDataStore struct {
+	dosages map[string]int
+}
+
+func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
+	dosage := stub.dosages[name]
+	return dosage
+}
+
 func TestSupplementDosages(t *testing.T) {
+	//create stub data store
+	store := StubSupplementDataStore{
+		map[string]int{
+			"vitamin-c": 500,
+			"magnesium": 400,
+		},
+	}
+
 	//create a new instance of our supplementsHandler and then call its method ServeHTTP
-	server := &supplementsHandler{}
+	//send in the stub data store as the argument to the supplementsHandler/server
+	server := &supplementsHandler{&store}
 
 	t.Run("Return Vitamin C dosage", func(t *testing.T) {
 		//Use helper function to create a new GET request for Vitamin C
