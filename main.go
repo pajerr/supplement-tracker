@@ -1,10 +1,11 @@
 package main
 
 import (
+	"log"
 	"net/http"
 )
 
 func main() {
-	http.HandleFunc("/supplements", supplementsHandler)
-	http.ListenAndServe(":8088", nil)
+	handler := http.HandlerFunc(supplementsHandler)
+	log.Fatal(http.ListenAndServe(":5050", handler))
 }
