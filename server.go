@@ -6,6 +6,10 @@ import (
 	"strings"
 )
 
+type SupplementStore interface {
+	GetSupplementDosage(name string) int
+}
+
 type Supplement struct {
 	Name   string `json:"Name"`
 	Dosage int    `json:"Dosage"`
@@ -26,14 +30,18 @@ func supplementsHandler(w http.ResponseWriter, r *http.Request) {
 		if supplement == "vitamin-c" {
 			w.WriteHeader(http.StatusOK)
 			//write dosage of Vitamin C to the response
-			fmt.Fprintf(w, "%v", testVitaminC.Dosage)
+			fmt.Fprintf(w, "%v", GetSupplementDosage(testVitaminC))
 		} else if supplement == "magnesium" {
 			w.WriteHeader(http.StatusOK)
 			//write dosage of Magnesium to the response
-			fmt.Fprintf(w, "%v", testMagnesium.Dosage)
+			fmt.Fprintf(w, "%v", GetSupplementDosage(testMagnesium))
 		} else {
 			w.WriteHeader(http.StatusNotFound)
 			fmt.Fprintf(w, "Supplement not found")
 		}
 	}
+}
+
+func GetSupplementDosage(supplement Supplement) int {
+	return supplement.Dosage
 }
