@@ -36,7 +36,8 @@ func supplementsHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Header().Set("Content-Type", "application/json")
 		//write the JSON to the response to the client
-		w.Write(supplementsJSON)
+		//w.Write(supplementsJSON)
+		fmt.Fprint(w, string(supplementsJSON))
 	}
 }
 
