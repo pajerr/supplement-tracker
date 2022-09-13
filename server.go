@@ -24,6 +24,11 @@ func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	//if client sends GET request
 	case http.MethodGet:
+		//if supplement is not "vitamin-c" or "magensium"
+		//if supplement != "vitamin-c" && supplement != "magnesium" {
+		//	w.WriteHeader(http.StatusNotFound)
+		//}
+
 		if supplement == "vitamin-c" {
 			w.WriteHeader(http.StatusOK)
 			//write dosage of Vitamin C to the response

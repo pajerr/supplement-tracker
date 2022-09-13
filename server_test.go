@@ -38,6 +38,7 @@ func TestSupplementDosages(t *testing.T) {
 		//we pass in the response and request to the ServeHTTP method from our supplementsHandler
 		server.ServeHTTP(response, request)
 
+		assertStatus(t, response.Code, http.StatusOK)
 		assertResponseBody(t, response.Body.String(), "500")
 	})
 
@@ -48,18 +49,19 @@ func TestSupplementDosages(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
+		assertStatus(t, response.Code, http.StatusOK)
 		assertResponseBody(t, response.Body.String(), "400")
 	})
 
-	/*t.Run("Return 404 on missing supplement", func(t *testing.T) {
-		//Use helper function to create a new GET request for Vitamin C
+	t.Run("Return 404 on missing supplement", func(t *testing.T) {
 		request := newGetSupplementDosage("iron")
 		response := httptest.NewRecorder()
 
-		supplementsHandler(response, request)
+		server.ServeHTTP(response, request)
+
 		assertStatus(t, response.Code, http.StatusNotFound)
 		assertResponseBody(t, response.Body.String(), "Supplement not found")
-	})*/
+	})
 }
 
 func newGetSupplementDosage(supplementName string) *http.Request {
@@ -71,5 +73,12 @@ func assertResponseBody(t testing.TB, got, want string) {
 	t.Helper()
 	if got != want {
 		t.Errorf("response body is wrong, got %q want %q", got, want)
+	}
+}
+
+func assertStatus(t testing.TB, got, want int) {
+	t.Helper()
+	if got != want {
+		t.Errorf("did not get correct status, got %d, want %d", got, want)
 	}
 }
