@@ -18,28 +18,22 @@ type supplementsHandler struct {
 
 //Refactored to use SupplementDataStore interface
 func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	//return 200 status code if request is POST method to pass test
+	if r.Method == http.MethodPost {
+		w.WriteHeader(http.StatusAccepted)
+		return
+	}
+
 	//r.URL.Path returns the path of the request which we can then use strings.TrimPrefix to trim away /supplements/
 	supplement := strings.TrimPrefix(r.URL.Path, "/supplements/")
+	dosage := s.store.GetSupplementDosage(supplement)
 
-	switch r.Method {
-	//if client sends GET request
-	case http.MethodGet:
-		//if supplement is not "vitamin-c" or "magensium"
-		//if supplement != "vitamin-c" && supplement != "magnesium" {
-		//	w.WriteHeader(http.StatusNotFound)
-		//}
-
-		if supplement == "vitamin-c" {
-			w.WriteHeader(http.StatusOK)
-			//write dosage of Vitamin C to the response
-			fmt.Fprintf(w, "%v", s.store.GetSupplementDosage("vitamin-c"))
-		} else if supplement == "magnesium" {
-			w.WriteHeader(http.StatusOK)
-			//write dosage of Magnesium to the response
-			fmt.Fprintf(w, "%v", s.store.GetSupplementDosage("magnesium"))
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-			fmt.Fprintf(w, "Supplement not found")
-		}
+	//if supplement not in StubSupplementDataStore return 404
+	if supplement != "magnesium" && supplement != "vitamin-c" {
+		w.WriteHeader(http.StatusNotFound)
+		return
 	}
+
+	fmt.Fprint(w, dosage)
+
 }

@@ -60,15 +60,34 @@ func TestSupplementDosages(t *testing.T) {
 		server.ServeHTTP(response, request)
 
 		assertStatus(t, response.Code, http.StatusNotFound)
-		assertResponseBody(t, response.Body.String(), "Supplement not found")
 	})
 }
 
+//Testing that POST reponse gets accepted
+func TestStoreDosage(t *testing.T) {
+	store := StubSupplementDataStore{
+		map[string]int{},
+	}
+
+	server := &supplementsHandler{&store}
+
+	t.Run("it returns accepted on POST", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusAccepted)
+	})
+}
+
+//Helper functon to create a new GET request for a supplement
 func newGetSupplementDosage(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/supplements/%s", supplementName), nil)
 	return req
 }
 
+//Helper function to check the response body
 func assertResponseBody(t testing.TB, got, want string) {
 	t.Helper()
 	if got != want {
@@ -76,6 +95,7 @@ func assertResponseBody(t testing.TB, got, want string) {
 	}
 }
 
+//Helper function to check the response status
 func assertStatus(t testing.TB, got, want int) {
 	t.Helper()
 	if got != want {
