@@ -18,12 +18,17 @@ type supplementsHandler struct {
 
 //Refactored to use SupplementDataStore interface
 func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	//return 200 status code if request is POST method to pass test
-	if r.Method == http.MethodPost {
-		w.WriteHeader(http.StatusAccepted)
-		return
+
+	switch r.Method {
+	case http.MethodPost:
+		s.processSetDosage(w)
+	case http.MethodGet:
+		s.showDosage(w, r)
 	}
 
+}
+
+func (s *supplementsHandler) showDosage(w http.ResponseWriter, r *http.Request) {
 	//r.URL.Path returns the path of the request which we can then use strings.TrimPrefix to trim away /supplements/
 	supplement := strings.TrimPrefix(r.URL.Path, "/supplements/")
 	dosage := s.store.GetSupplementDosage(supplement)
@@ -36,4 +41,9 @@ func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, dosage)
 
+}
+
+func (s *supplementsHandler) processSetDosage(w http.ResponseWriter) {
+	//return 200 status code if request is POST method to pass test
+	w.WriteHeader(http.StatusAccepted)
 }
