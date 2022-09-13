@@ -1,0 +1,14 @@
+=== RUN   TestSupplementDosages
+=== RUN   TestSupplementDosages/Return_Vitamin_C_dosage
+=== RUN   TestSupplementDosages/Return_Magnesium_dosage
+=== RUN   TestSupplementDosages/Return_404_on_missing_supplement
+--- PASS: TestSupplementDosages (0.00s)
+    --- PASS: TestSupplementDosages/Return_Vitamin_C_dosage (0.00s)
+    --- PASS: TestSupplementDosages/Return_Magnesium_dosage (0.00s)
+    --- PASS: TestSupplementDosages/Return_404_on_missing_supplement (0.00s)
+=== RUN   TestStoreDosage
+=== RUN   TestStoreDosage/it_returns_accepted_on_POST
+--- PASS: TestStoreDosage (0.00s)
+    --- PASS: TestStoreDosage/it_returns_accepted_on_POST (0.00s)
+PASS
+ok  	github.com/pajerr/supplement-tracker.git	0.109s
