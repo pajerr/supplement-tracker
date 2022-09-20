@@ -86,7 +86,6 @@ func TestPostAccepted(t *testing.T) {
 	})
 }
 
-/* Should be in integration test file
 func TestStoringTakenDosage(t *testing.T) {
 	//create stub data store
 	store := StubSupplementDataStore{
@@ -97,16 +96,20 @@ func TestStoringTakenDosage(t *testing.T) {
 	}
 	server := &supplementsHandler{&store}
 
-	t.Run("it changes taken magnesium dosage", func(t *testing.T) {
+	t.Run("it stores taken Magnesium dosage when POST", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium/200", nil)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
 
-		assertStatus(t, response.Code, http.StatusAccepted)
+		//assertStatus(t, response.Code, http.StatusAccepted)
+
+		if store.dosages["magnesium"] != 300 {
+			t.Errorf("got %d, want %d", store.dosages["magnesium"], 300)
+		}
+		//assertResponseBody(t, response.Body.String(), "200")
 	})
 }
-*/
 
 //Helper functon to create a new GET request for a supplement
 func newGetSupplementDosage(supplementName string) *http.Request {

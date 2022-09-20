@@ -9,11 +9,9 @@ type InMemoryDataStore struct {
 	store map[string]int
 }
 
-/*
-func (i *InMemoryDataStore) RecordWin(name string) {
-	i.store[name]++
+func (i *InMemoryDataStore) StoreTakenDosage(name string, dosage int) {
+	i.store[name] = dosage
 }
-*/
 
 /*
 func (i *InMemoryDataStore) GetPlayerScore(name string) int {
