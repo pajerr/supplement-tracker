@@ -17,6 +17,11 @@ func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
 	return dosage
 }
 
+//function to save taken supplement dosage
+func (stub *StubSupplementDataStore) StoreTakenDosage(name string, dosage int) {
+	stub.dosages[name] = dosage
+}
+
 func TestSupplementDosages(t *testing.T) {
 	//create stub data store
 	store := StubSupplementDataStore{
@@ -64,7 +69,7 @@ func TestSupplementDosages(t *testing.T) {
 }
 
 //Testing that POST reponse gets accepted
-func TestStoreDosage(t *testing.T) {
+func TestPostAccepted(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
 	}
@@ -80,6 +85,28 @@ func TestStoreDosage(t *testing.T) {
 		assertStatus(t, response.Code, http.StatusAccepted)
 	})
 }
+
+/* Should be in integration test file
+func TestStoringTakenDosage(t *testing.T) {
+	//create stub data store
+	store := StubSupplementDataStore{
+		map[string]int{
+			"vitamin-c": 0,
+			"magnesium": 0,
+		},
+	}
+	server := &supplementsHandler{&store}
+
+	t.Run("it changes taken magnesium dosage", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium/200", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusAccepted)
+	})
+}
+*/
 
 //Helper functon to create a new GET request for a supplement
 func newGetSupplementDosage(supplementName string) *http.Request {
