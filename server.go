@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -23,7 +24,7 @@ func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodPost:
-		s.processTakenDosage(w)
+		s.processTakenDosage(w, r)
 	case http.MethodGet:
 		s.showDosage(w, r)
 	}
@@ -45,13 +46,23 @@ func (s *supplementsHandler) showDosage(w http.ResponseWriter, r *http.Request) 
 
 }
 
-func (s *supplementsHandler) processTakenDosage(w http.ResponseWriter) {
+func (s *supplementsHandler) processTakenDosage(w http.ResponseWriter, r *http.Request) {
 	//extract the dosage and name of the supplement from the URL
 	//r.URL.Path returns the path of the request which we can then use strings.TrimPrefix to trim away /supplements/
-	//supplement := strings.TrimPrefix(r.URL.Path, "/supplements/")
 	//dosage := s.store.GetSupplementDosage(supplement)
+	//extract name of suplpplement and dosage from URL "/supplements/magnesium/200"
+	//supplement := strings.TrimPrefix(r.URL.Path, "/supplements/")
+	//split the URL into an array of strings at "/" delimiter
+	splittedURL := strings.Split(r.URL.Path, "/")
 
-	s.store.StoreTakenDosage("magnesium", 200)
+	//verified correct index is 2
+	supplement := splittedURL[2]
+	dosage := (splittedURL[3])
+	dosageInt, _ := strconv.Atoi(dosage)
+
+	//s.store.StoreTakenDosage("magnesium", 500)
+	s.store.StoreTakenDosage(supplement, dosageInt)
+
 	//return 200 status code if request is POST method to pass test
 	w.WriteHeader(http.StatusAccepted)
 }

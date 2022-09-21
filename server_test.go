@@ -97,7 +97,7 @@ func TestStoringTakenDosage(t *testing.T) {
 	server := &supplementsHandler{&store}
 
 	t.Run("it stores taken Magnesium dosage when POST", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium/200", nil)
+		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium/200/", nil)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
