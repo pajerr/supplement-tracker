@@ -12,12 +12,12 @@ type SupplementDataStore interface {
 
 //allows us to use the SupplementDataStore interface in the handler
 //for example to store.GetSupplelementDosage to get supplements dosage
-type supplementsHandler struct {
+type supplementsServer struct {
 	store SupplementDataStore
 }
 
 //Refactored to use SupplementDataStore interface
-func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodPost:
@@ -28,7 +28,7 @@ func (s *supplementsHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func (s *supplementsHandler) showDosage(w http.ResponseWriter, r *http.Request) {
+func (s *supplementsServer) showDosage(w http.ResponseWriter, r *http.Request) {
 	//r.URL.Path returns the path of the request which we can then use strings.TrimPrefix to trim away /supplements/
 	supplement := strings.TrimPrefix(r.URL.Path, "/supplements/")
 	dosage := s.store.GetSupplementDosage(supplement)
@@ -43,7 +43,7 @@ func (s *supplementsHandler) showDosage(w http.ResponseWriter, r *http.Request) 
 
 }
 
-func (s *supplementsHandler) processSetDosage(w http.ResponseWriter) {
+func (s *supplementsServer) processSetDosage(w http.ResponseWriter) {
 	//return 200 status code if request is POST method to pass test
 	w.WriteHeader(http.StatusAccepted)
 }

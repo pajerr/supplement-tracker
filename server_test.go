@@ -17,7 +17,7 @@ func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
 	return dosage
 }
 
-func TestSupplementDosages(t *testing.T) {
+func TestTakenSupplementDosage(t *testing.T) {
 	//create stub data store
 	store := StubSupplementDataStore{
 		map[string]int{
@@ -28,7 +28,7 @@ func TestSupplementDosages(t *testing.T) {
 
 	//create a new instance of our supplementsHandler and then call its method ServeHTTP
 	//send in the stub data store as the argument to the supplementsHandler/server
-	server := &supplementsHandler{&store}
+	server := &supplementsServer{&store}
 
 	t.Run("Return Vitamin C dosage", func(t *testing.T) {
 		//Use helper function to create a new GET request for Vitamin C
@@ -63,13 +63,13 @@ func TestSupplementDosages(t *testing.T) {
 	})
 }
 
-//Testing that POST reponse gets accepted
+//Testing that POST reponse gets accepted, only tests that the status code is 200
 func TestStoreDosage(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
 	}
 
-	server := &supplementsHandler{&store}
+	server := &supplementsServer{&store}
 
 	t.Run("it returns accepted on POST", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium", nil)

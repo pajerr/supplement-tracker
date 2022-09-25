@@ -13,6 +13,6 @@ func (i *InMemorySupplementDataStore) GetSupplementDosage(name string) int {
 }
 
 func main() {
-	server := &supplementsHandler{&InMemorySupplementDataStore{}}
+	server := &supplementsServer{&InMemorySupplementDataStore{}}
 	log.Fatal(http.ListenAndServe(":5050", server))
 }
