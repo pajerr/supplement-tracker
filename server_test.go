@@ -8,13 +8,21 @@ import (
 )
 
 //A map is a quick and easy way of making a stub key/value store for our tests
+//dosages stores name and dosage of single supplement
+//taken dosges shows daily taken amount of those dosages and it can be combined to total daily dosage
 type StubSupplementDataStore struct {
-	dosages map[string]int
+	dosages      map[string]int
+	takenDosages []string
 }
 
 func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
 	dosage := stub.dosages[name]
 	return dosage
+}
+
+//record the taken dosage
+func (stub *StubSupplementDataStore) RecordTakenDosage(name string) {
+	stub.takenDosages = append(stub.takenDosages, name)
 }
 
 func TestTakenSupplementDosage(t *testing.T) {
@@ -24,6 +32,7 @@ func TestTakenSupplementDosage(t *testing.T) {
 			"vitamin-c": 500,
 			"magnesium": 400,
 		},
+		nil,
 	}
 
 	//create a new instance of our supplementsHandler and then call its method ServeHTTP
@@ -64,26 +73,38 @@ func TestTakenSupplementDosage(t *testing.T) {
 }
 
 //Testing that POST reponse gets accepted, only tests that the status code is 200
-func TestStoreDosage(t *testing.T) {
+func TestStoreTakenDosage(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
+		nil,
 	}
 
 	server := &supplementsServer{&store}
 
-	t.Run("it returns accepted on POST", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium", nil)
+	t.Run("it records taken dosage when POST", func(t *testing.T) {
+		//request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium", nil)
+		request := newPostTakenDosageRequest("magnesium")
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
 
 		assertStatus(t, response.Code, http.StatusAccepted)
+
+		if len(store.takenDosages) != 1 {
+			t.Errorf("got %d want %d", len(store.takenDosages), 1)
+		}
 	})
 }
 
 //Helper functon to create a new GET request for a supplement
 func newGetSupplementDosage(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/supplements/%s", supplementName), nil)
+	return req
+}
+
+//Helper function to create a new POST request for a taken daily dosage for supplement
+func newPostTakenDosageRequest(name string) *http.Request {
+	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/supplements/%s", name), nil)
 	return req
 }
 

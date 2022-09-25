@@ -25,7 +25,6 @@ func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	case http.MethodGet:
 		s.showDosage(w, r)
 	}
-
 }
 
 func (s *supplementsServer) showDosage(w http.ResponseWriter, r *http.Request) {
