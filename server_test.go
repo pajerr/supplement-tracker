@@ -11,8 +11,8 @@ import (
 //dosages stores name and dosage of single supplement
 //taken dosges shows daily taken amount of those dosages and it can be combined to total daily dosage
 type StubSupplementDataStore struct {
-	dosages      map[string]int
-	takenDosages []string
+	dosages          map[string]int
+	takenSupplements []string
 }
 
 func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
@@ -22,7 +22,7 @@ func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
 
 //record the taken dosage
 func (stub *StubSupplementDataStore) RecordTakenDosage(name string) {
-	stub.takenDosages = append(stub.takenDosages, name)
+	stub.takenSupplements = append(stub.takenSupplements, name)
 }
 
 func TestTakenSupplementDosage(t *testing.T) {
@@ -90,12 +90,12 @@ func TestStoreTakenDosage(t *testing.T) {
 
 		assertStatus(t, response.Code, http.StatusAccepted)
 
-		if len(store.takenDosages) != 1 {
-			t.Errorf("got %d want %d", len(store.takenDosages), 1)
+		if len(store.takenSupplements) != 1 {
+			t.Errorf("got %d want %d", len(store.takenSupplements), 1)
 		}
 
-		if store.takenDosages[0] != supplement {
-			t.Errorf("did not store correct supplement got %q want %q", store.takenDosages[0], supplement)
+		if store.takenSupplements[0] != supplement {
+			t.Errorf("did not store correct supplement got %q want %q", store.takenSupplements[0], supplement)
 		}
 
 	})
@@ -108,7 +108,7 @@ func newGetSupplementDosage(supplementName string) *http.Request {
 }
 
 /*
-func newGetTakenDosagesRequest(supplementName string) *http.Request {
+func newGettakenSupplementsRequest(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/supplements/%s", supplementName), nil)
 	return req
 }
