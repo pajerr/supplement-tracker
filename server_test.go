@@ -21,7 +21,7 @@ func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
 }
 
 //record the taken dosage
-func (stub *StubSupplementDataStore) RecordTakenDosage(name string) {
+func (stub *StubSupplementDataStore) RecordtakenSupplement(name string) {
 	stub.takenSupplements = append(stub.takenSupplements, name)
 }
 
@@ -73,7 +73,7 @@ func TestTakenSupplementDosage(t *testing.T) {
 }
 
 //Testing that POST reponse gets accepted, only tests that the status code is 200
-func TestStoreTakenDosage(t *testing.T) {
+func TestStoretakenSupplement(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
 		nil,
@@ -83,7 +83,7 @@ func TestStoreTakenDosage(t *testing.T) {
 
 	t.Run("it records taken dosage when POST", func(t *testing.T) {
 		supplement := "magnesium"
-		request := newPostTakenDosageRequest(supplement)
+		request := newPosttakenSupplementRequest(supplement)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -115,7 +115,7 @@ func newGettakenSupplementsRequest(supplementName string) *http.Request {
 */
 
 //Helper function to create a new POST request for a taken daily dosage for supplement
-func newPostTakenDosageRequest(name string) *http.Request {
+func newPosttakenSupplementRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/supplements/%s", name), nil)
 	return req
 }

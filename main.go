@@ -13,7 +13,7 @@ func (i *InMemorySupplementDataStore) GetSupplementDosage(name string) int {
 }
 
 //we have not passed in a PlayerStore, so we need to hardcode response for now
-func (i *InMemorySupplementDataStore) RecordTakenDosage(name string) {
+func (i *InMemorySupplementDataStore) RecordtakenSupplement(name string) {
 }
 
 func main() {
