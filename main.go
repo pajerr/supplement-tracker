@@ -16,7 +16,7 @@ func (i *InMemorySupplementDataStore) RecordTakenSupplement(name string) {
 }
 
 func (i *InMemorySupplementDataStore) GetTakenSupplement(name string) int {
-	return 1
+	return 9
 }
 
 func main() {

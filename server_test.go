@@ -90,7 +90,7 @@ func TestStoretakenSupplement(t *testing.T) {
 
 	t.Run("it records taken supplemenet when POST", func(t *testing.T) {
 		supplement := "magnesium"
-		request := newPosttakenSupplementRequest(supplement)
+		request := newPostTakenSupplementRequest(supplement)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -125,15 +125,13 @@ func newGetSupplementDosage(supplementName string) *http.Request {
 	return req
 }
 
-/*
-func newGettakenSupplementsRequest(supplementName string) *http.Request {
+func newGetTakenSupplementRequest(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/supplements/%s", supplementName), nil)
 	return req
 }
-*/
 
 //Helper function to create a new POST request for a taken daily dosage for supplement
-func newPosttakenSupplementRequest(name string) *http.Request {
+func newPostTakenSupplementRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/supplements/%s", name), nil)
 	return req
 }

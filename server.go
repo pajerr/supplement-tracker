@@ -47,8 +47,8 @@ func (s *supplementsServer) supplementsHandler(w http.ResponseWriter, r *http.Re
 	switch r.Method {
 	case http.MethodPost:
 		s.processTakenSupplement(w, supplement)
-		//case http.MethodGet:
-		//s.showDosage(w, supplement)
+	case http.MethodGet:
+		s.showTakenSupplement(w, supplement)
 	}
 }
 
