@@ -95,7 +95,7 @@ func TestStoreTakenDosage(t *testing.T) {
 		}
 
 		if store.takenDosages[0] != supplement {
-			t.Errorf("did not store correct winner got %q want %q", store.takenDosages[0], supplement)
+			t.Errorf("did not store correct supplement got %q want %q", store.takenDosages[0], supplement)
 		}
 
 	})
