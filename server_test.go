@@ -103,9 +103,16 @@ func TestStoreTakenDosage(t *testing.T) {
 
 //Helper functon to create a new GET request for a supplement
 func newGetSupplementDosage(supplementName string) *http.Request {
+	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/dosages/%s", supplementName), nil)
+	return req
+}
+
+/*
+func newGetTakenDosagesRequest(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/supplements/%s", supplementName), nil)
 	return req
 }
+*/
 
 //Helper function to create a new POST request for a taken daily dosage for supplement
 func newPostTakenDosageRequest(name string) *http.Request {

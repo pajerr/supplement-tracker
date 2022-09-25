@@ -20,13 +20,34 @@ type supplementsServer struct {
 
 //Refactored to use SupplementDataStore interface
 func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	router := http.NewServeMux()
+
+	router.Handle("/dosages/", http.HandlerFunc(s.dosagesHandler))
+	router.Handle("/supplements/", http.HandlerFunc(s.supplementsHandler))
+
+	router.ServeHTTP(w, r)
+}
+
+func (s *supplementsServer) dosagesHandler(w http.ResponseWriter, r *http.Request) {
+	supplement := strings.TrimPrefix(r.URL.Path, "/dosages/")
+
+	switch r.Method {
+	//not yet implemented
+	//case http.MethodPost:
+	//s.processSetDosage(w, supplement)
+	case http.MethodGet:
+		s.showDosage(w, supplement)
+	}
+}
+
+func (s *supplementsServer) supplementsHandler(w http.ResponseWriter, r *http.Request) {
 	supplement := strings.TrimPrefix(r.URL.Path, "/supplements/")
 
 	switch r.Method {
 	case http.MethodPost:
-		s.processSetDosage(w, supplement)
-	case http.MethodGet:
-		s.showDosage(w, supplement)
+		s.processTakenSupplement(w, supplement)
+		//case http.MethodGet:
+		//s.showDosage(w, supplement)
 	}
 }
 
@@ -44,9 +65,20 @@ func (s *supplementsServer) showDosage(w http.ResponseWriter, supplement string)
 
 }
 
+//Function to process the POST request on /supplements/supplement handler and record 1 dosage as taken
+func (s *supplementsServer) processTakenSupplement(w http.ResponseWriter, supplement string) {
+	//return 200 status code if request is POST method to pass test
+	//selenium not what we expect, will be updated
+	s.store.RecordTakenDosage(supplement)
+	w.WriteHeader(http.StatusAccepted)
+}
+
+/*
+not yet implemented
 func (s *supplementsServer) processSetDosage(w http.ResponseWriter, supplement string) {
 	//return 200 status code if request is POST method to pass test
 	//selenium not what we expect, will be updated
 	s.store.RecordTakenDosage(supplement)
 	w.WriteHeader(http.StatusAccepted)
 }
+*/
