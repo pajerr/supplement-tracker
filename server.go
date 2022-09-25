@@ -75,13 +75,13 @@ func (s *supplementsServer) processTakenSupplement(w http.ResponseWriter, supple
 }
 
 func (s *supplementsServer) showTakenSupplement(w http.ResponseWriter, supplement string) {
-	takenSupp := s.store.GetTakenSupplement(supplement)
+	takenSuppAmount := s.store.GetTakenSupplement(supplement)
 
-	if takenSupp == 0 {
+	if takenSuppAmount == 0 {
 		w.WriteHeader(http.StatusNotFound)
 	}
 
-	fmt.Fprint(w, takenSupp)
+	fmt.Fprint(w, takenSuppAmount)
 }
 
 /*

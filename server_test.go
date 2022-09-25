@@ -88,7 +88,7 @@ func TestStoretakenSupplement(t *testing.T) {
 
 	server := &supplementsServer{&store}
 
-	t.Run("it records taken dosage when POST", func(t *testing.T) {
+	t.Run("it records taken supplemenet when POST", func(t *testing.T) {
 		supplement := "magnesium"
 		request := newPosttakenSupplementRequest(supplement)
 		response := httptest.NewRecorder()
@@ -97,8 +97,17 @@ func TestStoretakenSupplement(t *testing.T) {
 
 		assertStatus(t, response.Code, http.StatusAccepted)
 
+		//check that length of taken supplements is 1
 		if len(store.takenSupplements) != 1 {
 			t.Errorf("got %d want %d", len(store.takenSupplements), 1)
+		}
+
+		//store second taken supplement dose
+		server.ServeHTTP(response, request)
+
+		//check that amount of taken dosages for supplement is 2 as expected, since we made 2 POST requests
+		if store.takenSupplements[supplement] != 2 {
+			t.Errorf("got %d want %d", store.takenSupplements[supplement], 2)
 		}
 
 		/*
