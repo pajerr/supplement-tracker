@@ -12,8 +12,11 @@ func (i *InMemorySupplementDataStore) GetSupplementDosage(name string) int {
 	return 123
 }
 
-//we have not passed in a PlayerStore, so we need to hardcode response for now
-func (i *InMemorySupplementDataStore) RecordtakenSupplement(name string) {
+func (i *InMemorySupplementDataStore) RecordTakenSupplement(name string) {
+}
+
+func (i *InMemorySupplementDataStore) GetTakenSupplement(name string) int {
+	return 1
 }
 
 func main() {

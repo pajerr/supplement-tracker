@@ -9,7 +9,8 @@ import (
 //Interface of datastore, functions are defined in main.go
 type SupplementDataStore interface {
 	GetSupplementDosage(name string) int
-	RecordtakenSupplement(name string)
+	RecordTakenSupplement(name string)
+	GetTakenSupplement(name string) int
 }
 
 //allows us to use the SupplementDataStore interface in the handler
@@ -69,8 +70,18 @@ func (s *supplementsServer) showDosage(w http.ResponseWriter, supplement string)
 func (s *supplementsServer) processTakenSupplement(w http.ResponseWriter, supplement string) {
 	//return 200 status code if request is POST method to pass test
 	//selenium not what we expect, will be updated
-	s.store.RecordtakenSupplement(supplement)
+	s.store.RecordTakenSupplement(supplement)
 	w.WriteHeader(http.StatusAccepted)
+}
+
+func (s *supplementsServer) showTakenSupplement(w http.ResponseWriter, supplement string) {
+	takenSupp := s.store.GetTakenSupplement(supplement)
+
+	if takenSupp == 0 {
+		w.WriteHeader(http.StatusNotFound)
+	}
+
+	fmt.Fprint(w, takenSupp)
 }
 
 /*
