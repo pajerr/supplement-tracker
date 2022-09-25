@@ -20,5 +20,5 @@ func (i *InMemoryDataStore) GetPlayerScore(name string) int {
 */
 
 func (i *InMemoryDataStore) GetSupplementDosage(name string) int {
-	return 123
+	return 500
 }

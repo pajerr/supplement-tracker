@@ -1,9 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -17,6 +18,12 @@ type SupplementDataStore interface {
 //for example to store.GetSupplelementDosage to get supplements dosage
 type supplementsHandler struct {
 	store SupplementDataStore
+}
+
+//server.go
+type SupplementTaken struct {
+	Supplement string
+	Dosage     int
 }
 
 //Refactored to use SupplementDataStore interface
@@ -42,6 +49,7 @@ func (s *supplementsHandler) showDosage(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
+	w.WriteHeader(http.StatusAccepted)
 	fmt.Fprint(w, dosage)
 
 }
@@ -55,13 +63,18 @@ func (s *supplementsHandler) processTakenDosage(w http.ResponseWriter, r *http.R
 	//split the URL into an array of strings at "/" delimiter
 	splittedURL := strings.Split(r.URL.Path, "/")
 
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var dosageTaken map[string]int
+	json.Unmarshal(reqBody, &dosageTaken)
+
 	//verified correct index is 2
 	supplement := splittedURL[2]
-	dosage := (splittedURL[3])
-	dosageInt, _ := strconv.Atoi(dosage)
+	//dosage := (splittedURL[3])
+	//dosageInt, _ := strconv.Atoi(dosage)
+	//fmt.Printf(dosageInt)
 
 	//s.store.StoreTakenDosage("magnesium", 500)
-	s.store.StoreTakenDosage(supplement, dosageInt)
+	s.store.StoreTakenDosage(supplement, 500)
 
 	//return 200 status code if request is POST method to pass test
 	w.WriteHeader(http.StatusAccepted)

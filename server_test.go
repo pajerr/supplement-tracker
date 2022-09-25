@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -91,13 +92,17 @@ func TestStoringTakenDosage(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{
 			"vitamin-c": 0,
-			"magnesium": 0,
+			"magnesium": 200,
 		},
 	}
 	server := &supplementsHandler{&store}
 
 	t.Run("it stores taken Magnesium dosage when POST", func(t *testing.T) {
-		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium/200/", nil)
+		//jsonBody := []byte(`{"magnesium": "200"}`)
+		//bodyReader := bytes.NewReader(jsonBody)
+		//request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium/200", bodyReader)
+
+		request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium", nil)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -107,6 +112,20 @@ func TestStoringTakenDosage(t *testing.T) {
 		if store.dosages["magnesium"] != 300 {
 			t.Errorf("got %d, want %d", store.dosages["magnesium"], 300)
 		}
+
+		/*
+		   To parse JSON into our data model we create a Decoder from encoding/json package and then call its Decode method. To create a Decoder it needs an io.Reader to read from which in our case is our response spy's Body.
+		   Decode takes the address of the thing we are trying to decode into which is why we declare an empty slice of Player the line before.
+		*/
+
+		var got []SupplementTaken
+
+		err := json.NewDecoder(response.Body).Decode(&got)
+
+		if err != nil {
+			t.Fatalf("Unable to parse response from server %q into slice of Player, '%v'", response.Body, err)
+		}
+
 		//assertResponseBody(t, response.Body.String(), "200")
 	})
 }
