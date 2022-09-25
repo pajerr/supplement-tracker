@@ -8,9 +8,7 @@
     --- PASS: TestTakenSupplementDosage/Return_404_on_missing_supplement (0.00s)
 === RUN   TestStoreTakenDosage
 === RUN   TestStoreTakenDosage/it_records_taken_dosage_when_POST
-    server_test.go:94: got 0 want 1
---- FAIL: TestStoreTakenDosage (0.00s)
-    --- FAIL: TestStoreTakenDosage/it_records_taken_dosage_when_POST (0.00s)
-FAIL
-exit status 1
-FAIL	github.com/pajerr/supplement-tracker.git	0.107s
+--- PASS: TestStoreTakenDosage (0.00s)
+    --- PASS: TestStoreTakenDosage/it_records_taken_dosage_when_POST (0.00s)
+PASS
+ok  	github.com/pajerr/supplement-tracker.git	0.105s
