@@ -26,7 +26,8 @@ pipeline {
             stage("unit-test") {
                 steps {
                     echo 'UNIT TEST EXECUTION STARTED'
-                    sh "go test -v"
+                    //sh "go test -v"
+                    sh 'make unit-tests'
                 }
             }
             
