@@ -82,8 +82,8 @@ func TestStoreTakenDosage(t *testing.T) {
 	server := &supplementsServer{&store}
 
 	t.Run("it records taken dosage when POST", func(t *testing.T) {
-		//request, _ := http.NewRequest(http.MethodPost, "/supplements/magnesium", nil)
-		request := newPostTakenDosageRequest("magnesium")
+		supplement := "magnesium"
+		request := newPostTakenDosageRequest(supplement)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -93,6 +93,11 @@ func TestStoreTakenDosage(t *testing.T) {
 		if len(store.takenDosages) != 1 {
 			t.Errorf("got %d want %d", len(store.takenDosages), 1)
 		}
+
+		if store.takenDosages[0] != supplement {
+			t.Errorf("did not store correct winner got %q want %q", store.takenDosages[0], supplement)
+		}
+
 	})
 }
 
