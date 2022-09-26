@@ -9,10 +9,14 @@ import (
 )
 
 func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
-	store := InMemorySupplementDataStore{}
-	server := supplementsServer{&store}
+	store := NewInMemorySupplementStore()
+	server := supplementsServer{store}
+
+	//store := InMemorySupplementDataStore{}
+	//server := supplementsServer{&store}
 	supplement := "magnesium"
 
+	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
 	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
 	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
 
