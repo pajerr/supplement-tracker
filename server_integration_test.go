@@ -1,5 +1,3 @@
-//server_integration_test.go
-
 package main
 
 import (
@@ -24,5 +22,18 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 	server.ServeHTTP(response, newGetTakenSupplementRequest(supplement))
 	assertStatus(t, response.Code, http.StatusOK)
 
-	assertResponseBody(t, response.Body.String(), "2")
+	assertResponseBody(t, response.Body.String(), "3")
+}
+
+func TestRetieveSupplementDosages(t *testing.T) {
+	store := NewInMemorySupplementStore()
+	server := supplementsServer{store}
+
+	supplement := "magnesium"
+
+	server.ServeHTTP(httptest.NewRecorder(), newGetSupplementDosage(supplement))
+	response := httptest.NewRecorder()
+
+	assertStatus(t, response.Code, http.StatusOK)
+	assertResponseBody(t, response.Body.String(), "400")
 }
