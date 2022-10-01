@@ -25,6 +25,7 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 	assertResponseBody(t, response.Body.String(), "3")
 }
 
+//need to implement set/change the taken supplement dose in the data store
 func TestRetieveSupplementDosages(t *testing.T) {
 	store := NewInMemorySupplementStore()
 	server := supplementsServer{store}

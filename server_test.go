@@ -119,6 +119,25 @@ func TestStoretakenSupplement(t *testing.T) {
 	})
 }
 
+//server_test.go
+func TestListAllTakenSupps(t *testing.T) {
+	store := StubSupplementDataStore{
+		map[string]int{},
+		map[string]int{},
+	}
+
+	server := &supplementsServer{&store}
+
+	t.Run("it returns 200 on /listtaken", func(t *testing.T) {
+		request, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusOK)
+	})
+}
+
 //Helper functon to create a new GET request for a supplement
 func newGetSupplementDosage(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/dosages/%s", supplementName), nil)

@@ -25,8 +25,13 @@ func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	router.Handle("/dosages/", http.HandlerFunc(s.dosagesHandler))
 	router.Handle("/supplements/", http.HandlerFunc(s.supplementsHandler))
+	router.Handle("listtaken", http.HandlerFunc(s.listTakenSupplementsHandler))
 
 	router.ServeHTTP(w, r)
+}
+
+func (s *supplementsServer) listTakenSupplementsHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusAccepted)
 }
 
 func (s *supplementsServer) dosagesHandler(w http.ResponseWriter, r *http.Request) {
