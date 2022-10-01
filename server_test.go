@@ -44,7 +44,7 @@ func TestTakenSupplementDosage(t *testing.T) {
 
 	//create a new instance of our supplementsHandler and then call its method ServeHTTP
 	//send in the stub data store as the argument to the supplementsHandler/server
-	server := &supplementsServer{&store}
+	server := NewSupplementsServer(&store)
 
 	t.Run("Return Vitamin C dosage", func(t *testing.T) {
 		//Use helper function to create a new GET request for Vitamin C
@@ -86,7 +86,7 @@ func TestStoretakenSupplement(t *testing.T) {
 		map[string]int{},
 	}
 
-	server := &supplementsServer{&store}
+	server := NewSupplementsServer(&store)
 
 	t.Run("it records taken supplemenet when POST", func(t *testing.T) {
 		supplement := "magnesium"
@@ -126,7 +126,7 @@ func TestListAllTakenSupps(t *testing.T) {
 		map[string]int{},
 	}
 
-	server := &supplementsServer{&store}
+	server := NewSupplementsServer(&store)
 
 	t.Run("it returns 200 on /listtaken", func(t *testing.T) {
 		request, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)

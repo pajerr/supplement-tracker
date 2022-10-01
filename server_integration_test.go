@@ -8,7 +8,8 @@ import (
 
 func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 	store := NewInMemorySupplementStore()
-	server := supplementsServer{store}
+	//server := NewSupplementsServer{store}
+	server := NewSupplementsServer(store)
 
 	//store := InMemorySupplementDataStore{}
 	//server := supplementsServer{&store}
@@ -28,7 +29,7 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 //need to implement set/change the taken supplement dose in the data store
 func TestRetieveSupplementDosages(t *testing.T) {
 	store := NewInMemorySupplementStore()
-	server := supplementsServer{store}
+	server := NewSupplementsServer(store)
 
 	supplement := "magnesium"
 

@@ -23,6 +23,6 @@ func (i *InMemorySupplementDataStore) GetTakenSupplement(name string) int {
 
 //main now uses type from in_memory_supplement_store.go
 func main() {
-	server := &supplementsServer{NewInMemorySupplementStore()}
+	server := NewSupplementsServer(NewInMemorySupplementStore())
 	log.Fatal(http.ListenAndServe(":5050", server))
 }

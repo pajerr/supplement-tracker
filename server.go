@@ -17,18 +17,37 @@ type SupplementDataStore interface {
 //for example to store.GetSupplelementDosage to get supplements dosage
 type supplementsServer struct {
 	store SupplementDataStore
+	//router *http.ServeMux
+	http.Handler
 }
 
-//Refactored to use SupplementDataStore interface
-func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	router := http.NewServeMux()
+//do the one-time setup of creating the router. Each request can then just use that one instance of the router
+func NewSupplementsServer(store SupplementDataStore) *supplementsServer {
+	/*s := &supplementsServer{
+		store,
+		http.NewServeMux(),
+	}*/
 
+	s := new(supplementsServer)
+
+	s.store = store
+
+	router := http.NewServeMux()
 	router.Handle("/dosages/", http.HandlerFunc(s.dosagesHandler))
 	router.Handle("/supplements/", http.HandlerFunc(s.supplementsHandler))
 	router.Handle("listtaken", http.HandlerFunc(s.listTakenSupplementsHandler))
 
-	router.ServeHTTP(w, r)
+	s.Handler = router
+
+	return s
 }
+
+/*
+//Refactored to use SupplementDataStore interface
+func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.router.ServeHTTP(w, r)
+}
+*/
 
 func (s *supplementsServer) listTakenSupplementsHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusAccepted)
