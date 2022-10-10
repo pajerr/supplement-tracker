@@ -104,7 +104,8 @@ func (s *supplementsServer) showTakenSupplement(w http.ResponseWriter, supplemen
 	if takenSuppAmount == 0 {
 		w.WriteHeader(http.StatusNotFound)
 	}
-
+	//to fix CORS errors
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprint(w, takenSuppAmount)
 }
 
