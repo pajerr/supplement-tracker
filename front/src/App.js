@@ -74,6 +74,15 @@ const App = () => {
       });
   }, []);
 
+  const handleTakenMagnesium = (event) => {
+    event.preventDefault();
+    axios
+      .post("http://localhost:5050/supplements/magnesium")
+      .then((response) => {
+        console.log(response);
+      });
+  };
+
   return (
     <div>
       <h1>Anecdote of the day</h1>
@@ -88,8 +97,9 @@ const App = () => {
       <Button handleClick={handleVoteClick} text="Vote" />
       <h1>Anecdote with the most votes</h1>
       <MostVotes anecdotes={anecdotes} points={points} />
-      <h1>Magensium taken</h1>
+      <h1>Magnesium taken</h1>
       <DisplayMagnesium magnesium={magnesium} />
+      <Button handleClick={handleTakenMagnesium} text="Magnesium taken" />
     </div>
   );
 };

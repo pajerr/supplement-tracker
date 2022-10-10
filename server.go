@@ -93,8 +93,10 @@ func (s *supplementsServer) showDosage(w http.ResponseWriter, supplement string)
 //Function to process the POST request on /supplements/supplement handler and record 1 dosage as taken
 func (s *supplementsServer) processTakenSupplement(w http.ResponseWriter, supplement string) {
 	//return 200 status code if request is POST method to pass test
-	//selenium not what we expect, will be updated
 	s.store.RecordTakenSupplement(supplement)
+
+	//to fix CORS errors in frontend
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusAccepted)
 }
 
@@ -104,7 +106,7 @@ func (s *supplementsServer) showTakenSupplement(w http.ResponseWriter, supplemen
 	if takenSuppAmount == 0 {
 		w.WriteHeader(http.StatusNotFound)
 	}
-	//to fix CORS errors
+	//to fix CORS errors in frontend
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprint(w, takenSuppAmount)
 }
