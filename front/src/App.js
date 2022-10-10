@@ -81,6 +81,9 @@ const App = () => {
       .then((response) => {
         console.log(response);
       });
+
+    const newMagnesium = magnesium + 1;
+    setMagnesium(newMagnesium);
   };
 
   return (
