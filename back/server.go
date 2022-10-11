@@ -86,6 +86,7 @@ func (s *supplementsServer) showDosage(w http.ResponseWriter, supplement string)
 		return
 	}
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprint(w, dosage)
 
 }
