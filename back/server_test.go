@@ -152,7 +152,8 @@ func TestListAllTakenSupps(t *testing.T) {
 		store := StubSupplementDataStore{nil, nil, wantedSupplementsStatus}
 		server := NewSupplementsServer(&store)
 
-		request, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)
+		request := newGetAllSupplementsStatusRequest()
+		//request, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -227,6 +228,12 @@ func getSupplementsStatusFromResponse(t testing.TB, body io.Reader) (supplements
 	}
 
 	return
+}
+
+//listtaken path helper for new http requests
+func newGetAllSupplementsStatusRequest() *http.Request {
+	req, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)
+	return req
 }
 
 func assertGetSupplementsStatus(t testing.TB, got, want []Supplement) {

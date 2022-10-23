@@ -8,22 +8,34 @@ import (
 
 func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 	store := NewInMemorySupplementStore()
-	//server := NewSupplementsServer{store}
 	server := NewSupplementsServer(store)
 
-	//store := InMemorySupplementDataStore{}
-	//server := supplementsServer{&store}
 	supplement := "magnesium"
 
+	//store taken magensium units 3 times with POST request
 	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
 	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
 	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
 
-	response := httptest.NewRecorder()
-	server.ServeHTTP(response, newGetTakenSupplementRequest(supplement))
-	assertStatus(t, response.Code, http.StatusOK)
+	t.Run("get taken supplement units", func(t *testing.T) {
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, newGetTakenSupplementRequest(supplement))
+		assertStatus(t, response.Code, http.StatusOK)
 
-	assertResponseBody(t, response.Body.String(), "3")
+		assertResponseBody(t, response.Body.String(), "3")
+	})
+
+	t.Run("get All Supplements status", func(t *testing.T) {
+		response := httptest.NewRecorder()
+		server.ServeHTTP(response, newGetAllSupplementsStatusRequest())
+		assertStatus(t, response.Code, http.StatusOK)
+
+		got := getSupplementsStatusFromResponse(t, response.Body)
+		want := []Supplement{
+			{"magnesium", 3},
+		}
+		assertGetSupplementsStatus(t, got, want)
+	})
 }
 
 /*
