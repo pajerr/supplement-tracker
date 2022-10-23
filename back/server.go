@@ -14,7 +14,7 @@ type SupplementDataStore interface {
 	RecordTakenSupplement(name string)
 	GetTakenSupplement(name string) int
 	//get status for all supplements from /dashboard endpoint
-	GetAllSupplementsStatus() []Supplement
+	GetDashboard() []Supplement
 }
 
 //type for /dashboard
@@ -75,7 +75,7 @@ func (s *supplementsServer) DashboardHandler(w http.ResponseWriter, r *http.Requ
 
 	//Set header from const jsonContentType
 	w.Header().Set("content-type", jsonContentType)
-	json.NewEncoder(w).Encode(s.store.GetAllSupplementsStatus())
+	json.NewEncoder(w).Encode(s.store.GetDashboard())
 	//json.NewEncoder(w).Encode(supplementTakenTable)
 
 	w.WriteHeader(http.StatusOK)

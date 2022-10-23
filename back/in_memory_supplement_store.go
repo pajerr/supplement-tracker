@@ -44,10 +44,10 @@ func (i *InMemorySupplementStore) SetSupplementDosage(name string, dosage int) {
 
 //listtaken functions
 //return supplements taken unit status from /listtaken path
-func (s *InMemorySupplementStore) GetAllSupplementsStatus() []Supplement {
-	var supplementsStatus []Supplement
+func (s *InMemorySupplementStore) GetDashboard() []Supplement {
+	var Dashboard []Supplement
 	for name, takenDosage := range s.takenSupplements {
-		supplementsStatus = append(supplementsStatus, Supplement{name, takenDosage})
+		Dashboard = append(Dashboard, Supplement{name, takenDosage})
 	}
-	return supplementsStatus
+	return Dashboard
 }

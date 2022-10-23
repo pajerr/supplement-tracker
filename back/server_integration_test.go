@@ -30,7 +30,7 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 
 	t.Run("get All Supplements status", func(t *testing.T) {
 		response := httptest.NewRecorder()
-		server.ServeHTTP(response, newGetAllSupplementsStatusRequest())
+		server.ServeHTTP(response, newGetDashboardRequest())
 		assertStatus(t, response.Code, http.StatusOK)
 
 		got := getSupplementsStatusFromResponse(t, response.Body)

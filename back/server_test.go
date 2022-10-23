@@ -44,7 +44,7 @@ func (stub *StubSupplementDataStore) RecordTakenSupplement(name string) {
 }
 
 // #### /dashboard functions ###
-func (s *StubSupplementDataStore) GetAllSupplementsStatus() []Supplement {
+func (s *StubSupplementDataStore) GetDashboard() []Supplement {
 	return s.supplementsStatus
 }
 
@@ -152,7 +152,7 @@ func TestListAllTakenSupps(t *testing.T) {
 		store := StubSupplementDataStore{nil, nil, wantedSupplementsStatus}
 		server := NewSupplementsServer(&store)
 
-		request := newGetAllSupplementsStatusRequest()
+		request := newGetDashboardRequest()
 		//request, _ := http.NewRequest(http.MethodGet, "/dashboard", nil)
 		response := httptest.NewRecorder()
 
@@ -231,7 +231,7 @@ func getSupplementsStatusFromResponse(t testing.TB, body io.Reader) (supplements
 }
 
 //dashboard path helper for new http requests
-func newGetAllSupplementsStatusRequest() *http.Request {
+func newGetDashboardRequest() *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, "/dashboard", nil)
 	return req
 }
