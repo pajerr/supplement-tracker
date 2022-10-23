@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -17,11 +18,30 @@ type StubSupplementDataStore struct {
 	takenSupplements map[string]int
 }
 
+/*
+//Stub datastore for testing storing and retriving taken units
+type StubUnitSupplementDataStore struct {
+	//supplement name and taken units
+	UnitsTaken map[string]int
+}
+
+func (stub *StubSupplementDataStore) GetTakenSupplement(name string) int {
+	takenSupplementdosages := stub.takenSupplements[name]
+	return takenSupplementdosages
+}
+*/
+
+// ##### /dosage functions #####
 func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
 	dosage := stub.dosages[name]
 	return dosage
 }
 
+func (stub *StubSupplementDataStore) SetSupplementDosage(name string, dosage int) {
+	stub.dosages[name] = dosage
+}
+
+// ##### /supplement function ######
 func (stub *StubSupplementDataStore) GetTakenSupplement(name string) int {
 	takenSupplementdosages := stub.takenSupplements[name]
 	return takenSupplementdosages
@@ -121,11 +141,7 @@ func TestStoretakenSupplement(t *testing.T) {
 
 //server_test.go
 func TestListAllTakenSupps(t *testing.T) {
-	store := StubSupplementDataStore{
-		map[string]int{},
-		map[string]int{},
-	}
-
+	store := StubSupplementDataStore{}
 	server := NewSupplementsServer(&store)
 
 	t.Run("it returns 200 on /listtaken", func(t *testing.T) {
@@ -134,13 +150,25 @@ func TestListAllTakenSupps(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
+		var got []Supplement
+
+		err := json.NewDecoder(response.Body).Decode(&got)
+		if err != nil {
+			t.Fatalf("Unable to parse response from server %q into slice of Supplement, '%v'", response.Body, err)
+		}
+
 		assertStatus(t, response.Code, http.StatusOK)
 	})
 }
 
-//Helper functon to create a new GET request for a supplement
+//Helper functon to create a new GET request for a supplement dosage
 func newGetSupplementDosage(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/dosages/%s", supplementName), nil)
+	return req
+}
+
+func newSetSupplementDosage(supplementName string) *http.Request {
+	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/dosages/%s", supplementName), nil)
 	return req
 }
 
