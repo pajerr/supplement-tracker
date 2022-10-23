@@ -19,7 +19,7 @@ type StubSupplementDataStore struct {
 	//supplement name and taken dosage
 	takenSupplements map[string]int
 	//lists all taken supplements and taken units
-	supplementsStatus []Supplement
+	Dashboard []Supplement
 }
 
 // ##### /dosage functions #####
@@ -45,7 +45,7 @@ func (stub *StubSupplementDataStore) RecordTakenSupplement(name string) {
 
 // #### /dashboard functions ###
 func (s *StubSupplementDataStore) GetDashboard() []Supplement {
-	return s.supplementsStatus
+	return s.Dashboard
 }
 
 func TestTakenSupplementDosage(t *testing.T) {
@@ -56,7 +56,7 @@ func TestTakenSupplementDosage(t *testing.T) {
 			"magnesium": 400,
 		},
 		map[string]int{},
-		//pass nil for supplementsStatus
+		//pass nil for Dashboard
 		nil,
 	}
 
@@ -102,7 +102,7 @@ func TestStoretakenSupplement(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
 		map[string]int{},
-		//pass nil for supplementsStatus
+		//pass nil for Dashboard
 		nil,
 	}
 
@@ -143,13 +143,13 @@ func TestStoretakenSupplement(t *testing.T) {
 func TestListAllTakenSupps(t *testing.T) {
 
 	t.Run("it returns supplementStatus as JSON", func(t *testing.T) {
-		wantedSupplementsStatus := []Supplement{
+		wantedDashboard := []Supplement{
 			{"vitamin-c", 1},
 			{"magnesium", 2},
 			{"iron", 1},
 		}
 
-		store := StubSupplementDataStore{nil, nil, wantedSupplementsStatus}
+		store := StubSupplementDataStore{nil, nil, wantedDashboard}
 		server := NewSupplementsServer(&store)
 
 		request := newGetDashboardRequest()
@@ -164,11 +164,11 @@ func TestListAllTakenSupps(t *testing.T) {
 		}
 
 		//helper function handles error checking also
-		got := getSupplementsStatusFromResponse(t, response.Body)
+		got := getDashboardFromResponse(t, response.Body)
 
 		assertStatus(t, response.Code, http.StatusOK)
 		assertContentType(t, response, jsonContentType)
-		assertGetSupplementsStatus(t, got, wantedSupplementsStatus)
+		assertGetDashboard(t, got, wantedDashboard)
 	})
 }
 
@@ -219,9 +219,9 @@ func assertContentType(t testing.TB, response *httptest.ResponseRecorder, want s
 }
 
 //dashboard path helpers
-func getSupplementsStatusFromResponse(t testing.TB, body io.Reader) (supplementsStatus []Supplement) {
+func getDashboardFromResponse(t testing.TB, body io.Reader) (Dashboard []Supplement) {
 	t.Helper()
-	err := json.NewDecoder(body).Decode(&supplementsStatus)
+	err := json.NewDecoder(body).Decode(&Dashboard)
 
 	if err != nil {
 		t.Fatalf("Unable to parse response from server %q into slice of Supplement, '%v'", body, err)
@@ -236,7 +236,7 @@ func newGetDashboardRequest() *http.Request {
 	return req
 }
 
-func assertGetSupplementsStatus(t testing.TB, got, want []Supplement) {
+func assertGetDashboard(t testing.TB, got, want []Supplement) {
 	t.Helper()
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("got %v want %v", got, want)

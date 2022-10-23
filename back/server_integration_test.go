@@ -33,12 +33,12 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 		server.ServeHTTP(response, newGetDashboardRequest())
 		assertStatus(t, response.Code, http.StatusOK)
 
-		got := getSupplementsStatusFromResponse(t, response.Body)
+		got := getDashboardFromResponse(t, response.Body)
 		want := []Supplement{
 			{"magnesium", 3},
 			{"vitamin-c", 1},
 		}
-		assertGetSupplementsStatus(t, got, want)
+		assertGetDashboard(t, got, want)
 	})
 }
 
