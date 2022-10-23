@@ -43,7 +43,7 @@ func (stub *StubSupplementDataStore) RecordTakenSupplement(name string) {
 	stub.takenSupplements[name]++
 }
 
-// #### /listtaken functions ###
+// #### /dashboard functions ###
 func (s *StubSupplementDataStore) GetAllSupplementsStatus() []Supplement {
 	return s.supplementsStatus
 }
@@ -153,7 +153,7 @@ func TestListAllTakenSupps(t *testing.T) {
 		server := NewSupplementsServer(&store)
 
 		request := newGetAllSupplementsStatusRequest()
-		//request, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)
+		//request, _ := http.NewRequest(http.MethodGet, "/dashboard", nil)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -218,7 +218,7 @@ func assertContentType(t testing.TB, response *httptest.ResponseRecorder, want s
 	}
 }
 
-//listtaken path helpers
+//dashboard path helpers
 func getSupplementsStatusFromResponse(t testing.TB, body io.Reader) (supplementsStatus []Supplement) {
 	t.Helper()
 	err := json.NewDecoder(body).Decode(&supplementsStatus)
@@ -230,9 +230,9 @@ func getSupplementsStatusFromResponse(t testing.TB, body io.Reader) (supplements
 	return
 }
 
-//listtaken path helper for new http requests
+//dashboard path helper for new http requests
 func newGetAllSupplementsStatusRequest() *http.Request {
-	req, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)
+	req, _ := http.NewRequest(http.MethodGet, "/dashboard", nil)
 	return req
 }
 

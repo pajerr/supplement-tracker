@@ -13,11 +13,11 @@ type SupplementDataStore interface {
 	GetSupplementDosage(name string) int
 	RecordTakenSupplement(name string)
 	GetTakenSupplement(name string) int
-	//get status for all supplements from /listtaken endpoint
+	//get status for all supplements from /dashboard endpoint
 	GetAllSupplementsStatus() []Supplement
 }
 
-//type for /listtaken
+//type for /dashboard
 type Supplement struct {
 	Name         string
 	DosagesTaken int
@@ -51,7 +51,7 @@ func NewSupplementsServer(store SupplementDataStore) *supplementsServer {
 	router := http.NewServeMux()
 	router.Handle("/dosages/", http.HandlerFunc(s.dosagesHandler))
 	router.Handle("/supplements/", http.HandlerFunc(s.supplementsHandler))
-	router.Handle("/listtaken", http.HandlerFunc(s.listTakenSupplementsHandler))
+	router.Handle("/dashboard", http.HandlerFunc(s.listTakenSupplementsHandler))
 
 	s.Handler = router
 
@@ -65,7 +65,7 @@ func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 */
 
-// ############################### /listtaken path ###############################
+// ############################### /dashboard path ###############################
 
 func (s *supplementsServer) listTakenSupplementsHandler(w http.ResponseWriter, r *http.Request) {
 	//old hardocded version
