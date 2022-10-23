@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 )
 
@@ -16,6 +17,8 @@ type StubSupplementDataStore struct {
 	dosages map[string]int
 	//supplement name and taken dosage
 	takenSupplements map[string]int
+	//lists all taken supplements and taken units
+	supplementsStatus []Supplement
 }
 
 /*
@@ -60,6 +63,8 @@ func TestTakenSupplementDosage(t *testing.T) {
 			"magnesium": 400,
 		},
 		map[string]int{},
+		//pass nil for supplementsStatus
+		nil,
 	}
 
 	//create a new instance of our supplementsHandler and then call its method ServeHTTP
@@ -104,6 +109,8 @@ func TestStoretakenSupplement(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
 		map[string]int{},
+		//pass nil for supplementsStatus
+		nil,
 	}
 
 	server := NewSupplementsServer(&store)
@@ -141,10 +148,17 @@ func TestStoretakenSupplement(t *testing.T) {
 
 //server_test.go
 func TestListAllTakenSupps(t *testing.T) {
-	store := StubSupplementDataStore{}
-	server := NewSupplementsServer(&store)
 
-	t.Run("it returns 200 on /listtaken", func(t *testing.T) {
+	t.Run("it returns supplementStatus as JSON", func(t *testing.T) {
+		wantedSupplementsStatus := []Supplement{
+			{"vitamin-c", 1},
+			{"magnesium", 2},
+			{"iron", 1},
+		}
+
+		store := StubSupplementDataStore{nil, nil, wantedSupplementsStatus}
+		server := NewSupplementsServer(&store)
+
 		request, _ := http.NewRequest(http.MethodGet, "/listtaken", nil)
 		response := httptest.NewRecorder()
 
@@ -158,6 +172,11 @@ func TestListAllTakenSupps(t *testing.T) {
 		}
 
 		assertStatus(t, response.Code, http.StatusOK)
+
+		if !reflect.DeepEqual(got, wantedSupplementsStatus) {
+			t.Errorf("got %v want %v", got, wantedSupplementsStatus)
+		}
+
 	})
 }
 

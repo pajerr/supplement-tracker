@@ -13,6 +13,8 @@ type SupplementDataStore interface {
 	GetSupplementDosage(name string) int
 	RecordTakenSupplement(name string)
 	GetTakenSupplement(name string) int
+	//get status for all supplements from /listtaken endpoint
+	//GetSupplementsStatus() []Supplement
 }
 
 //type for /listtaken
