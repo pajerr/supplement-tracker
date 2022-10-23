@@ -51,7 +51,7 @@ func NewSupplementsServer(store SupplementDataStore) *supplementsServer {
 	router := http.NewServeMux()
 	router.Handle("/dosages/", http.HandlerFunc(s.dosagesHandler))
 	router.Handle("/supplements/", http.HandlerFunc(s.supplementsHandler))
-	router.Handle("/dashboard", http.HandlerFunc(s.listTakenSupplementsHandler))
+	router.Handle("/dashboard", http.HandlerFunc(s.DashboardHandler))
 
 	s.Handler = router
 
@@ -67,7 +67,7 @@ func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // ############################### /dashboard path ###############################
 
-func (s *supplementsServer) listTakenSupplementsHandler(w http.ResponseWriter, r *http.Request) {
+func (s *supplementsServer) DashboardHandler(w http.ResponseWriter, r *http.Request) {
 	//old hardocded version
 	/*supplementTakenTable := []Supplement{
 		{"Magnesium", 2},
