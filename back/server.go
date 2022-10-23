@@ -23,6 +23,9 @@ type Supplement struct {
 	DosagesTaken int
 }
 
+//consant to return correct header content-type
+const jsonContentType = "application/json"
+
 //allows us to use the SupplementDataStore interface in the handler
 //for example to store.GetSupplelementDosage to get supplements dosage
 //supplementsServer now has all the methods that http.Handler has, which is just ServeHTTP, this is embedding
@@ -65,9 +68,13 @@ func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // ############################### /listtaken path ###############################
 
 func (s *supplementsServer) listTakenSupplementsHandler(w http.ResponseWriter, r *http.Request) {
+	//old hardocded version
 	/*supplementTakenTable := []Supplement{
 		{"Magnesium", 2},
 	}*/
+
+	//Set header from const jsonContentType
+	w.Header().Set("content-type", jsonContentType)
 	json.NewEncoder(w).Encode(s.store.GetAllSupplementsStatus())
 	//json.NewEncoder(w).Encode(supplementTakenTable)
 

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -156,19 +157,17 @@ func TestListAllTakenSupps(t *testing.T) {
 
 		server.ServeHTTP(response, request)
 
-		var got []Supplement
-
-		err := json.NewDecoder(response.Body).Decode(&got)
-		if err != nil {
-			t.Fatalf("Unable to parse response from server %q into slice of Supplement, '%v'", response.Body, err)
+		//server_test.go
+		if response.Result().Header.Get("content-type") != "application/json" {
+			t.Errorf("response did not have content-type of application/json, got %v", response.Result().Header)
 		}
+
+		//helper function handles error checking also
+		got := getSupplementsStatusFromResponse(t, response.Body)
 
 		assertStatus(t, response.Code, http.StatusOK)
-
-		if !reflect.DeepEqual(got, wantedSupplementsStatus) {
-			t.Errorf("got %v want %v", got, wantedSupplementsStatus)
-		}
-
+		assertContentType(t, response, jsonContentType)
+		assertGetSupplementsStatus(t, got, wantedSupplementsStatus)
 	})
 }
 
@@ -207,5 +206,32 @@ func assertStatus(t testing.TB, got, want int) {
 	t.Helper()
 	if got != want {
 		t.Errorf("did not get correct status, got %d, want %d", got, want)
+	}
+}
+
+//helper to check header content type
+func assertContentType(t testing.TB, response *httptest.ResponseRecorder, want string) {
+	t.Helper()
+	if response.Result().Header.Get("content-type") != want {
+		t.Errorf("response did not have content-type of %s, got %v", want, response.Result().Header)
+	}
+}
+
+//listtaken path helpers
+func getSupplementsStatusFromResponse(t testing.TB, body io.Reader) (supplementsStatus []Supplement) {
+	t.Helper()
+	err := json.NewDecoder(body).Decode(&supplementsStatus)
+
+	if err != nil {
+		t.Fatalf("Unable to parse response from server %q into slice of Supplement, '%v'", body, err)
+	}
+
+	return
+}
+
+func assertGetSupplementsStatus(t testing.TB, got, want []Supplement) {
+	t.Helper()
+	if !reflect.DeepEqual(got, want) {
+		t.Errorf("got %v want %v", got, want)
 	}
 }
