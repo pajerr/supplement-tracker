@@ -16,7 +16,9 @@ import (
 type StubSupplementDataStore struct {
 	//supplement name and dosage
 	dosages map[string]int
-	//supplement name and taken dosage
+	//dose of single unit of supplement
+	//UnitDose map[string]int
+	//supplement name and taken units
 	UnitsTaken map[string]int
 	//lists all taken supplements and taken units
 	Dashboard []Supplement
