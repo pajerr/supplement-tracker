@@ -21,19 +21,6 @@ type StubSupplementDataStore struct {
 	supplementsStatus []Supplement
 }
 
-/*
-//Stub datastore for testing storing and retriving taken units
-type StubUnitSupplementDataStore struct {
-	//supplement name and taken units
-	UnitsTaken map[string]int
-}
-
-func (stub *StubSupplementDataStore) GetTakenSupplement(name string) int {
-	takenSupplementdosages := stub.takenSupplements[name]
-	return takenSupplementdosages
-}
-*/
-
 // ##### /dosage functions #####
 func (stub *StubSupplementDataStore) GetSupplementDosage(name string) int {
 	dosage := stub.dosages[name]
@@ -53,6 +40,11 @@ func (stub *StubSupplementDataStore) GetTakenSupplement(name string) int {
 //record the taken supplement dose
 func (stub *StubSupplementDataStore) RecordTakenSupplement(name string) {
 	stub.takenSupplements[name]++
+}
+
+// #### /listtaken functions ###
+func (s *StubSupplementDataStore) GetAllSupplementsStatus() []Supplement {
+	return s.supplementsStatus
 }
 
 func TestTakenSupplementDosage(t *testing.T) {

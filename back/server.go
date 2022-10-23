@@ -14,7 +14,7 @@ type SupplementDataStore interface {
 	RecordTakenSupplement(name string)
 	GetTakenSupplement(name string) int
 	//get status for all supplements from /listtaken endpoint
-	//GetSupplementsStatus() []Supplement
+	GetAllSupplementsStatus() []Supplement
 }
 
 //type for /listtaken
@@ -65,11 +65,11 @@ func (s *supplementsServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // ############################### /listtaken path ###############################
 
 func (s *supplementsServer) listTakenSupplementsHandler(w http.ResponseWriter, r *http.Request) {
-	supplementTakenTable := []Supplement{
+	/*supplementTakenTable := []Supplement{
 		{"Magnesium", 2},
-	}
-
-	json.NewEncoder(w).Encode(supplementTakenTable)
+	}*/
+	json.NewEncoder(w).Encode(s.store.GetAllSupplementsStatus())
+	//json.NewEncoder(w).Encode(supplementTakenTable)
 
 	w.WriteHeader(http.StatusOK)
 }

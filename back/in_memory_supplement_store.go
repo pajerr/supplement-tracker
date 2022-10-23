@@ -41,3 +41,8 @@ func (i *InMemorySupplementStore) SetSupplementDosage(name string, dosage int) {
 	//i.dosages[name] = dosage
 	i.dosages["magnesium"] = 400
 }
+
+//listtaken functions
+func (s *InMemorySupplementStore) GetAllSupplementsStatus() []Supplement {
+	return nil
+}
