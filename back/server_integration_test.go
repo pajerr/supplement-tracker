@@ -25,6 +25,9 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 		assertResponseBody(t, response.Body.String(), "3")
 	})
 
+	supplement = "vitamin-c"
+	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
+
 	t.Run("get All Supplements status", func(t *testing.T) {
 		response := httptest.NewRecorder()
 		server.ServeHTTP(response, newGetAllSupplementsStatusRequest())
@@ -33,6 +36,7 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 		got := getSupplementsStatusFromResponse(t, response.Body)
 		want := []Supplement{
 			{"magnesium", 3},
+			{"vitamin-c", 1},
 		}
 		assertGetSupplementsStatus(t, got, want)
 	})
