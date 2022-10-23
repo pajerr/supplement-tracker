@@ -13,20 +13,20 @@ func TestRecordingTakenDosagesAndRetrievingThem(t *testing.T) {
 	supplement := "magnesium"
 
 	//store taken magensium units 3 times with POST request
-	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
-	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
-	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
+	server.ServeHTTP(httptest.NewRecorder(), newPostUnitsTakenRequest(supplement))
+	server.ServeHTTP(httptest.NewRecorder(), newPostUnitsTakenRequest(supplement))
+	server.ServeHTTP(httptest.NewRecorder(), newPostUnitsTakenRequest(supplement))
 
 	t.Run("get taken supplement units", func(t *testing.T) {
 		response := httptest.NewRecorder()
-		server.ServeHTTP(response, newGetTakenSupplementRequest(supplement))
+		server.ServeHTTP(response, newGetUnitsTakenRequest(supplement))
 		assertStatus(t, response.Code, http.StatusOK)
 
 		assertResponseBody(t, response.Body.String(), "3")
 	})
 
 	supplement = "vitamin-c"
-	server.ServeHTTP(httptest.NewRecorder(), newPostTakenSupplementRequest(supplement))
+	server.ServeHTTP(httptest.NewRecorder(), newPostUnitsTakenRequest(supplement))
 
 	t.Run("get All Supplements status", func(t *testing.T) {
 		response := httptest.NewRecorder()

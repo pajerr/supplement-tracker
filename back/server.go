@@ -11,8 +11,8 @@ import (
 type SupplementDataStore interface {
 	SetSupplementDosage(supplement string, dosage int)
 	GetSupplementDosage(name string) int
-	RecordTakenSupplement(name string)
-	GetTakenSupplement(name string) int
+	RecordUnitsTaken(name string)
+	GetUnitsTaken(name string) int
 	//get status for all supplements from /dashboard endpoint
 	GetDashboard() []Supplement
 }
@@ -102,9 +102,9 @@ func (s *supplementsServer) supplementsHandler(w http.ResponseWriter, r *http.Re
 
 	switch r.Method {
 	case http.MethodPost:
-		s.processTakenSupplement(w, supplement)
+		s.processUnitsTaken(w, supplement)
 	case http.MethodGet:
-		s.showTakenSupplement(w, supplement)
+		s.showUnitsTaken(w, supplement)
 	}
 }
 
@@ -138,9 +138,9 @@ func (s *supplementsServer) processSetDosage(w http.ResponseWriter, supplement s
 
 // /supplements POST function
 // Function to process the POST request on /supplements/supplement handler and record 1 dosage as taken
-func (s *supplementsServer) processTakenSupplement(w http.ResponseWriter, supplement string) {
+func (s *supplementsServer) processUnitsTaken(w http.ResponseWriter, supplement string) {
 	//return 200 status code if request is POST method to pass test
-	s.store.RecordTakenSupplement(supplement)
+	s.store.RecordUnitsTaken(supplement)
 
 	//to fix CORS errors in frontend
 	w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -148,8 +148,8 @@ func (s *supplementsServer) processTakenSupplement(w http.ResponseWriter, supple
 }
 
 // /supplements GET function
-func (s *supplementsServer) showTakenSupplement(w http.ResponseWriter, supplement string) {
-	takenSuppAmount := s.store.GetTakenSupplement(supplement)
+func (s *supplementsServer) showUnitsTaken(w http.ResponseWriter, supplement string) {
+	takenSuppAmount := s.store.GetUnitsTaken(supplement)
 
 	if takenSuppAmount == 0 {
 		w.WriteHeader(http.StatusNotFound)

@@ -17,7 +17,7 @@ type StubSupplementDataStore struct {
 	//supplement name and dosage
 	dosages map[string]int
 	//supplement name and taken dosage
-	takenSupplements map[string]int
+	UnitsTaken map[string]int
 	//lists all taken supplements and taken units
 	Dashboard []Supplement
 }
@@ -33,14 +33,14 @@ func (stub *StubSupplementDataStore) SetSupplementDosage(name string, dosage int
 }
 
 // ##### /supplement function ######
-func (stub *StubSupplementDataStore) GetTakenSupplement(name string) int {
-	takenSupplementdosages := stub.takenSupplements[name]
-	return takenSupplementdosages
+func (stub *StubSupplementDataStore) GetUnitsTaken(name string) int {
+	UnitsTaken := stub.UnitsTaken[name]
+	return UnitsTaken
 }
 
 //record the taken supplement dose
-func (stub *StubSupplementDataStore) RecordTakenSupplement(name string) {
-	stub.takenSupplements[name]++
+func (stub *StubSupplementDataStore) RecordUnitsTaken(name string) {
+	stub.UnitsTaken[name]++
 }
 
 // #### /dashboard functions ###
@@ -48,7 +48,7 @@ func (s *StubSupplementDataStore) GetDashboard() []Supplement {
 	return s.Dashboard
 }
 
-func TestTakenSupplementDosage(t *testing.T) {
+func TestUnitsTakenDosage(t *testing.T) {
 	//create stub data store
 	store := StubSupplementDataStore{
 		map[string]int{
@@ -98,7 +98,7 @@ func TestTakenSupplementDosage(t *testing.T) {
 }
 
 //Testing that POST reponse gets accepted, only tests that the status code is 200
-func TestStoretakenSupplement(t *testing.T) {
+func TestStoreUnitsTaken(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
 		map[string]int{},
@@ -110,7 +110,7 @@ func TestStoretakenSupplement(t *testing.T) {
 
 	t.Run("it records taken supplemenet when POST", func(t *testing.T) {
 		supplement := "magnesium"
-		request := newPostTakenSupplementRequest(supplement)
+		request := newPostUnitsTakenRequest(supplement)
 		response := httptest.NewRecorder()
 
 		server.ServeHTTP(response, request)
@@ -118,21 +118,21 @@ func TestStoretakenSupplement(t *testing.T) {
 		assertStatus(t, response.Code, http.StatusAccepted)
 
 		//check that length of taken supplements is 1
-		if len(store.takenSupplements) != 1 {
-			t.Errorf("got %d want %d", len(store.takenSupplements), 1)
+		if len(store.UnitsTaken) != 1 {
+			t.Errorf("got %d want %d", len(store.UnitsTaken), 1)
 		}
 
 		//store second taken supplement dose
 		server.ServeHTTP(response, request)
 
 		//check that amount of taken dosages for supplement is 2 as expected, since we made 2 POST requests
-		if store.takenSupplements[supplement] != 2 {
-			t.Errorf("got %d want %d", store.takenSupplements[supplement], 2)
+		if store.UnitsTaken[supplement] != 2 {
+			t.Errorf("got %d want %d", store.UnitsTaken[supplement], 2)
 		}
 
 		/*
-			if store.takenSupplements[0] != supplement {
-				t.Errorf("did not store correct supplement got %q want %q", store.takenSupplements[0], supplement)
+			if store.UnitsTaken[0] != supplement {
+				t.Errorf("did not store correct supplement got %q want %q", store.UnitsTaken[0], supplement)
 			}
 		*/
 
@@ -183,13 +183,13 @@ func newSetSupplementDosage(supplementName string) *http.Request {
 	return req
 }
 
-func newGetTakenSupplementRequest(supplementName string) *http.Request {
+func newGetUnitsTakenRequest(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/supplements/%s", supplementName), nil)
 	return req
 }
 
 //Helper function to create a new POST request for a taken daily dosage for supplement
-func newPostTakenSupplementRequest(name string) *http.Request {
+func newPostUnitsTakenRequest(name string) *http.Request {
 	req, _ := http.NewRequest(http.MethodPost, fmt.Sprintf("/supplements/%s", name), nil)
 	return req
 }

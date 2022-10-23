@@ -6,8 +6,8 @@ func NewInMemorySupplementStore() *InMemorySupplementStore {
 }
 
 type InMemorySupplementStore struct {
-	takenSupplements map[string]int
-	dosages          map[string]int
+	UnitsTaken map[string]int
+	dosages    map[string]int
 }
 
 /*
@@ -17,8 +17,8 @@ func (i *InMemorySupplementStore) RecordWin(name string) {
 */
 
 //record the taken supplement dose
-func (i *InMemorySupplementStore) RecordTakenSupplement(name string) {
-	i.takenSupplements[name]++
+func (i *InMemorySupplementStore) RecordUnitsTaken(name string) {
+	i.UnitsTaken[name]++
 }
 
 /*
@@ -27,9 +27,9 @@ func (i *InMemorySupplementStore) GetPlayerScore(name string) int {
 }
 */
 
-func (i *InMemorySupplementStore) GetTakenSupplement(name string) int {
-	takenSupplementdosages := i.takenSupplements[name]
-	return takenSupplementdosages
+func (i *InMemorySupplementStore) GetUnitsTaken(name string) int {
+	UnitsTaken := i.UnitsTaken[name]
+	return UnitsTaken
 }
 
 func (i *InMemorySupplementStore) GetSupplementDosage(name string) int {
@@ -46,7 +46,7 @@ func (i *InMemorySupplementStore) SetSupplementDosage(name string, dosage int) {
 //return supplements taken unit status from /listtaken path
 func (s *InMemorySupplementStore) GetDashboard() []Supplement {
 	var Dashboard []Supplement
-	for name, takenDosage := range s.takenSupplements {
+	for name, takenDosage := range s.UnitsTaken {
 		Dashboard = append(Dashboard, Supplement{name, takenDosage})
 	}
 	return Dashboard
