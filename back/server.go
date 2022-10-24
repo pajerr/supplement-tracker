@@ -73,6 +73,8 @@ func (s *supplementsServer) DashboardHandler(w http.ResponseWriter, r *http.Requ
 		{"Magnesium", 2},
 	}*/
 
+	// allow cors
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	//Set header from const jsonContentType
 	w.Header().Set("content-type", jsonContentType)
 	json.NewEncoder(w).Encode(s.store.GetDashboard())

@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const DisplayAnecdote = ({ anecdotes, selected }) => {
-  return <div>{anecdotes[selected]}</div>;
-};
-
 const DisplayMagnesium = ({ magnesium }) => {
   return <div>{magnesium}</div>;
+};
+
+const DisplayDashboard = ({ dashboard }) => {
+  return <div>{dashboard}</div>;
+};
+
+const DisplayAnecdote = ({ anecdotes, selected }) => {
+  return <div>{anecdotes[selected]}</div>;
 };
 
 const Button = ({ handleClick, text }) => {
@@ -56,6 +60,7 @@ const App = () => {
   const [selected, setSelected] = useState(0);
   const [points, setPoints] = useState(new Array(6).fill(0));
   const [magnesium, setMagnesium] = useState(0);
+  const [dashboard, setDashboard] = useState([]);
 
   const handleVoteClick = () => {
     const newPoints = [...points];
@@ -86,6 +91,21 @@ const App = () => {
     setMagnesium(newMagnesium);
   };
 
+  const FetchDashboard = () => {
+    axios.get("http://localhost:5050/dashboard").then((response) => {
+      console.log("inside effect dashboard:", response.data);
+      console.log("promise fulfilled");
+      console.log(response.data);
+      setDashboard(response.data);
+    });
+
+    /* palauttaa data logissa
+    const setDashboard = (response) => {
+      setDashboard(response.data);
+    };
+    */
+  };
+
   return (
     <div>
       <h1>Anecdote of the day</h1>
@@ -103,6 +123,9 @@ const App = () => {
       <h1>Magnesium taken</h1>
       <DisplayMagnesium magnesium={magnesium} />
       <Button handleClick={handleTakenMagnesium} text="Magnesium taken" />
+      <h1>Dashboard</h1>
+      <DisplayDashboard dashboard={dashboard} />
+      <Button handleClick={FetchDashboard} text="Fetch dashboard" />
     </div>
   );
 };

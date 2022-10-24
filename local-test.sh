@@ -1,13 +1,14 @@
 #!/bin/bash
 
+
 get_datetime() {
     # Get current date and time into variable
     datetime=$(date +%Y-%m-%d_%H-%M-%S)
 }
 
 build_backend () {
-    get_datetime
-    cd back && go build -o ../bin/backend-$datetime.go
+    [[ -f bin/backend.go ]] && rm bin/backend.go
+    cd back && go build -o ../bin/backend.go
 }
 
 start_frontend () {
@@ -28,7 +29,14 @@ fi
 while getopts ":b:f" opt; do
   case $opt in
     b)
-      build_backend
+      command=$OPTARG
+      if [ $command == "build" ]
+      then
+        build_backend
+      elif [ $command == "start" ]
+      then
+        start_backend
+      fi
       ;;
     f)
       start_frontend
