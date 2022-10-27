@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Dashboard from "./components/Dashboard";
 
 const DisplayMagnesium = ({ magnesium }) => {
   return <div>{magnesium}</div>;
 };
 
 const DisplayDashboard = ({ dashboard }) => {
-  return <div>{dashboard}</div>;
+  // dashboard = FetchDashboard();
+  return (
+    <div>
+      <ul>
+        {dashboard.map((i, fakekey) => (
+          <li key={fakekey}>{i.Name}</li>
+        ))}
+      </ul>
+    </div>
+  );
 };
 
 const DisplayAnecdote = ({ anecdotes, selected }) => {
@@ -60,7 +70,8 @@ const App = () => {
   const [selected, setSelected] = useState(0);
   const [points, setPoints] = useState(new Array(6).fill(0));
   const [magnesium, setMagnesium] = useState(0);
-  const [dashboard, setDashboard] = useState([]);
+  //const [dashboard, setDashboard] = useState([]);
+  const [dashboard, setDashboard] = useState(new Array(6).fill(0));
 
   const handleVoteClick = () => {
     const newPoints = [...points];
@@ -69,6 +80,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    /*
     console.log("effect");
     axios
       .get("http://localhost:5050/supplements/magnesium")
@@ -77,6 +89,17 @@ const App = () => {
         console.log("promise fulfilled");
         setMagnesium(response.data);
       });
+  }, []);
+  */
+    axios.get("http://localhost:5050/dashboard").then((response) => {
+      console.log("inside effect dashboard:", response.data);
+      console.log("promise fulfilled");
+      //console.log(response.data);
+      setDashboard(response.data);
+      //iterate over map for debugging
+      const dashboardResult = dashboard.map((i) => i.name);
+      console.log("Debug print:", dashboardResult);
+    });
   }, []);
 
   const handleTakenMagnesium = (event) => {
@@ -87,23 +110,27 @@ const App = () => {
         console.log(response);
       });
 
-    const newMagnesium = magnesium + 1;
-    setMagnesium(newMagnesium);
+    axios
+      .get("http://localhost:5050/supplements/magnesium")
+      .then((response) => {
+        console.log(response);
+        setMagnesium(response.data);
+      });
+
+    /*const newMagnesium = magnesium + 1;
+    setMagnesium(newMagnesium);*/
   };
 
   const FetchDashboard = () => {
     axios.get("http://localhost:5050/dashboard").then((response) => {
       console.log("inside effect dashboard:", response.data);
       console.log("promise fulfilled");
-      console.log(response.data);
+      //console.log(response.data);
       setDashboard(response.data);
+      //iterate over map for debugging
+      const dashboardResult = dashboard.map((i) => i.name);
+      console.log("Debug print:", dashboardResult);
     });
-
-    /* palauttaa data logissa
-    const setDashboard = (response) => {
-      setDashboard(response.data);
-    };
-    */
   };
 
   return (
