@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Dashboard from "./components/Dashboard";
+import dashboardService from "./services/Dashboard";
 
 const DisplayMagnesium = ({ magnesium }) => {
   return <div>{magnesium}</div>;
@@ -29,7 +30,11 @@ const App = () => {
   const [dashboard, setDashboard] = useState(new Array(6).fill(0));
 
   useEffect(() => {
-    /*
+    dashboardService.getAll().then((initialDashboard) => {
+      setDashboard(initialDashboard);
+    });
+  }, []);
+  /*
     console.log("effect");
     axios
       .get("http://localhost:5050/supplements/magnesium")
@@ -40,6 +45,7 @@ const App = () => {
       });
   }, []);
   */
+  /*
     axios.get("http://localhost:5050/dashboard").then((response) => {
       console.log("inside effect dashboard:", response.data);
       console.log("promise fulfilled");
@@ -50,6 +56,7 @@ const App = () => {
       console.log("Debug print:", dashboardResult);
     });
   }, []);
+  */
 
   const handleTakenMagnesium = (event) => {
     event.preventDefault();
