@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+
 import Dashboard from "./components/Dashboard";
 import dashboardService from "./services/Dashboard";
+import supplementService from "./services/Supplement";
 
 const DisplayMagnesium = ({ magnesium }) => {
   return <div>{magnesium}</div>;
@@ -28,6 +30,8 @@ const App = () => {
   const [magnesium, setMagnesium] = useState(0);
   //const [dashboard, setDashboard] = useState([]);
   const [dashboard, setDashboard] = useState(new Array(6).fill(0));
+
+  const supplementName = "magnesium";
 
   useEffect(() => {
     dashboardService.getAll().then((initialDashboard) => {
@@ -58,6 +62,19 @@ const App = () => {
   }, []);
   */
 
+  const handleTakenUnit = (supplementName) => {
+    console.log(
+      "handleTakenUnit debug suppName:",
+      supplementName,
+      "not work??"
+    );
+    supplementService
+      .addTakenUnit(supplementName)
+      .then((returnedSupplement) => {
+        setMagnesium(returnedSupplement);
+      });
+  };
+
   const handleTakenMagnesium = (event) => {
     event.preventDefault();
     axios
@@ -72,31 +89,21 @@ const App = () => {
         console.log(response);
         setMagnesium(response.data);
       });
-
-    /*const newMagnesium = magnesium + 1;
-    setMagnesium(newMagnesium);*/
-  };
-
-  const FetchDashboard = () => {
-    axios.get("http://localhost:5050/dashboard").then((response) => {
-      console.log("inside effect dashboard:", response.data);
-      console.log("promise fulfilled");
-      //console.log(response.data);
-      setDashboard(response.data);
-      //iterate over map for debugging
-      const dashboardResult = dashboard.map((i) => i.name);
-      console.log("Debug print:", dashboardResult);
-    });
   };
 
   return (
     <div>
       <h1>Magnesium taken</h1>
       <DisplayMagnesium magnesium={magnesium} />
-      <Button handleClick={handleTakenMagnesium} text="Magnesium taken" />
+      <button onClick={() => handleTakenUnit(supplementName)}>
+        Take unit test
+      </button>
+      <Button
+        handleClick={handleTakenMagnesium}
+        text="Hard coded button Take unit"
+      />
       <h1>Dashboard</h1>
       <DisplayDashboard dashboard={dashboard} />
-      <Button handleClick={FetchDashboard} text="Fetch dashboard" />
     </div>
   );
 };
