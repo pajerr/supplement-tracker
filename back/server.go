@@ -143,10 +143,13 @@ func (s *supplementsServer) processSetDosage(w http.ResponseWriter, supplement s
 func (s *supplementsServer) processUnitsTaken(w http.ResponseWriter, supplement string) {
 	//return 200 status code if request is POST method to pass test
 	s.store.RecordUnitsTaken(supplement)
+	//Need to return updated value of units taken
+	updatedTakenUnits := s.store.GetUnitsTaken(supplement)
 
 	//to fix CORS errors in frontend
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusAccepted)
+	fmt.Fprint(w, updatedTakenUnits)
 }
 
 // /supplements GET function

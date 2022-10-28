@@ -7,6 +7,7 @@ get_datetime() {
 }
 
 build_backend () {
+    echo "Building new backend..."
     [[ -f bin/backend.go ]] && rm bin/backend.go
     cd back && go build -o ../bin/backend.go
 }
@@ -26,17 +27,10 @@ then
   build_backend
 fi  
 
-while getopts ":b:f" opt; do
+while getopts ":bf" opt; do
   case $opt in
     b)
-      command=$OPTARG
-      if [ $command == "build" ]
-      then
-        build_backend
-      elif [ $command == "start" ]
-      then
-        start_backend
-      fi
+      build_backend
       ;;
     f)
       start_frontend
