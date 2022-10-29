@@ -9,18 +9,7 @@ const getAll = () => {
 */
 
 const addTakenUnit = (supplementName) => {
-  //POST works, but not rendering what we got from backend
   const request = axios.post(`${baseUrl}/${supplementName}`);
-  //.post("http://localhost:5050/supplements/magnesium");
-  //console.log("debug baseurl:", baseUrl);
-  //console.log("deubg suppname in axios function:", supplementName);
-  //console.log(request);
-  /*
-    .then((response) => {
-      console.log(response.data);
-      return response.data;
-    });
-    */
   return request.then((response) => response.data);
 };
 

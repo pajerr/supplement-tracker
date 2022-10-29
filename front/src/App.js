@@ -27,11 +27,19 @@ const Button = ({ handleClick, text }) => {
 };
 
 const App = () => {
+  const [newSupplement, setNewSupplement] = useState("");
+  //will be removed in future for testing only
   const [magnesium, setMagnesium] = useState(0);
-  //const [dashboard, setDashboard] = useState([]);
+  //dashboard stores information about all supplements
   const [dashboard, setDashboard] = useState(new Array(6).fill(0));
 
   const supplementName = "magnesium";
+
+  //syncs changes in form field to App state
+  const handleSupplementFormChange = (event) => {
+    console.log(event.target.value);
+    setNewSupplement(event.target.value);
+  };
 
   useEffect(() => {
     dashboardService.getAll().then((initialDashboard) => {
@@ -90,9 +98,16 @@ const App = () => {
         setMagnesium(response.data);
       });
   };
-
+  //<form onSubmit={handleTakenUnit}></form>
   return (
     <div>
+      <h1>Supplemenents tracked:</h1>
+      <DisplayDashboard dashboard={dashboard} />
+      <h1>Add new supplement</h1>
+      <form onSubmit={() => handleTakenUnit(newSupplement)}>
+        <input value={newSupplement} onChange={handleSupplementFormChange} />
+        <button type="submit">Save</button>
+      </form>
       <h1>Magnesium taken</h1>
       <DisplayMagnesium magnesium={magnesium} />
       <button onClick={() => handleTakenUnit(supplementName)}>
@@ -102,8 +117,6 @@ const App = () => {
         handleClick={handleTakenMagnesium}
         text="Hard coded button Take unit"
       />
-      <h1>Dashboard</h1>
-      <DisplayDashboard dashboard={dashboard} />
     </div>
   );
 };
