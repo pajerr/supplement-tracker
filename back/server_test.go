@@ -99,7 +99,6 @@ func TestUnitsTakenDosage(t *testing.T) {
 	})
 }
 
-//Testing that POST reponse gets accepted, only tests that the status code is 200
 func TestStoreUnitsTaken(t *testing.T) {
 	store := StubSupplementDataStore{
 		map[string]int{},
@@ -139,6 +138,28 @@ func TestStoreUnitsTaken(t *testing.T) {
 		*/
 
 	})
+
+	t.Run("it replies with updated taken unit amount after POST", func(t *testing.T) {
+		supplement := "magnesium"
+		request := newPostUnitsTakenRequest(supplement)
+		response := httptest.NewRecorder()
+
+		server.ServeHTTP(response, request)
+		server.ServeHTTP(response, request)
+		server.ServeHTTP(response, request)
+		server.ServeHTTP(response, request)
+
+		assertStatus(t, response.Code, http.StatusAccepted)
+
+		//server_test.go:158: response body is wrong, got "3456" want "5"
+		want := "5"
+		got := response.Body.String()
+
+		if got != want {
+			t.Errorf("response body is wrong, got %q want %q", got, want)
+		}
+	})
+
 }
 
 //server_test.go
@@ -174,7 +195,7 @@ func TestListAllTakenSupps(t *testing.T) {
 	})
 }
 
-//Helper functon to create a new GET request for a supplement dosage
+//Helper function to create a new GET request for a supplement dosage
 func newGetSupplementDosage(supplementName string) *http.Request {
 	req, _ := http.NewRequest(http.MethodGet, fmt.Sprintf("/dosages/%s", supplementName), nil)
 	return req

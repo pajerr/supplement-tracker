@@ -149,6 +149,7 @@ func (s *supplementsServer) processUnitsTaken(w http.ResponseWriter, supplement 
 	//to fix CORS errors in frontend
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.WriteHeader(http.StatusAccepted)
+	//Reply with updated value of units taken
 	fmt.Fprint(w, updatedTakenUnits)
 }
 
