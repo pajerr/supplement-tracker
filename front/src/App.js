@@ -16,9 +16,9 @@ const DisplayDashboard = ({ dashboard, handleTakenUnit }) => {
         textAlign: "left",
       }}
     >
-      <table>
-        <tbody>
-          <ul>
+      <ul>
+        <table>
+          <tbody>
             {dashboard.map((i, fakekey) => (
               <Dashboard
                 key={fakekey}
@@ -26,9 +26,9 @@ const DisplayDashboard = ({ dashboard, handleTakenUnit }) => {
                 handleTakenUnit={handleTakenUnit}
               />
             ))}
-          </ul>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </ul>
     </div>
   );
 };
@@ -42,7 +42,7 @@ const App = () => {
   //will be removed in future for testing only
   const [magnesium, setMagnesium] = useState(0);
   //dashboard stores information about all supplements
-  const [dashboard, setDashboard] = useState(new Array(6).fill(0));
+  const [dashboard, setDashboard] = useState(new Array().fill(0));
 
   const supplementName = "magnesium";
 
