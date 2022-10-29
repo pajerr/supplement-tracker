@@ -9,14 +9,26 @@ const DisplayMagnesium = ({ magnesium }) => {
   return <div>{magnesium}</div>;
 };
 
-const DisplayDashboard = ({ dashboard }) => {
+const DisplayDashboard = ({ dashboard, handleTakenUnit }) => {
   return (
-    <div>
-      <ul>
-        {dashboard.map((i, fakekey) => (
-          <Dashboard key={fakekey} dashboard={i} />
-        ))}
-      </ul>
+    <div
+      style={{
+        textAlign: "left",
+      }}
+    >
+      <table>
+        <tbody>
+          <ul>
+            {dashboard.map((i, fakekey) => (
+              <Dashboard
+                key={fakekey}
+                dashboard={i}
+                handleTakenUnit={handleTakenUnit}
+              />
+            ))}
+          </ul>
+        </tbody>
+      </table>
     </div>
   );
 };
@@ -101,7 +113,10 @@ const App = () => {
   return (
     <div>
       <h1>Supplemenents tracked:</h1>
-      <DisplayDashboard dashboard={dashboard} />
+      <DisplayDashboard
+        dashboard={dashboard}
+        handleTakenUnit={handleTakenUnit}
+      />
       <h1>Add new supplement</h1>
       <form onSubmit={() => handleTakenUnit(newSupplement)}>
         <input value={newSupplement} onChange={handleSupplementFormChange} />
