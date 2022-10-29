@@ -10,7 +10,6 @@ const DisplayMagnesium = ({ magnesium }) => {
 };
 
 const DisplayDashboard = ({ dashboard }) => {
-  // dashboard = FetchDashboard();
   return (
     <div>
       <ul>
