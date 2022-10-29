@@ -1,7 +1,8 @@
 const Dashboard = ({ dashboard }) => {
+  console.log("Dashboard debug dashboard:", dashboard);
   return (
     <li>
-      {dashboard.name} - {dashboard.dosagesTaken}
+      {dashboard.Name} - {dashboard.DosagesTaken}{" "}
     </li>
   );
 };

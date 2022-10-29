@@ -14,7 +14,7 @@ const DisplayDashboard = ({ dashboard }) => {
     <div>
       <ul>
         {dashboard.map((i, fakekey) => (
-          <li key={fakekey}>{i.Name}</li>
+          <Dashboard key={fakekey} dashboard={i} />
         ))}
       </ul>
     </div>
