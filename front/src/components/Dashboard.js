@@ -1,5 +1,5 @@
 const Dashboard = ({ dashboard, handleTakenUnit }) => {
-  console.log("Dashboard debug dashboard:", dashboard);
+  //console.log("Dashboard debug dashboard:", dashboard);
   return (
     <tr>
       <li>Supplement: {dashboard.Name}</li>

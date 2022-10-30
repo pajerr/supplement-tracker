@@ -11,6 +11,7 @@ const DisplayMagnesium = ({ magnesium }) => {
 
 const DisplayDashboard = ({ dashboard, handleTakenUnit }) => {
   return (
+    //tailwind
     <div
       style={{
         textAlign: "left",
@@ -82,15 +83,29 @@ const App = () => {
   */
 
   const handleTakenUnit = (supplementName) => {
-    console.log(
-      "handleTakenUnit debug suppName:",
-      supplementName,
-      "not work??"
-    );
     supplementService
       .addTakenUnit(supplementName)
       .then((returnedSupplement) => {
-        setMagnesium(returnedSupplement);
+        //find entry of supplement from dashboard array
+        const supplementEntry = dashboard.find(
+          (i) => i.Name === supplementName
+        );
+        //make copy of supplement entry and update UnitsTaken with response from server
+        const updatedSupplementEntry = {
+          ...supplementEntry,
+          DosagesTaken: returnedSupplement,
+        };
+        console.log("updatedSupplementEntry:", updatedSupplementEntry);
+        console.log("BEFORE debug dashboard:", dashboard);
+        //copy old object to all entries expect updated entry that matches supplementEntry.Name of updated entry
+        setDashboard(
+          dashboard.map((supplementEntry) =>
+            supplementEntry.Name !== supplementName
+              ? supplementEntry
+              : updatedSupplementEntry
+          )
+        );
+        console.log("AFTER debug dashboard:", dashboard);
       });
   };
 
