@@ -85,15 +85,14 @@ const App = () => {
   const handleTakenUnit = (supplementName) => {
     supplementService
       .addTakenUnit(supplementName)
-      .then((returnedSupplement) => {
-        //find entry of supplement from dashboard array
+      .then((returnedUnitsTaken) => {
         const supplementEntry = dashboard.find(
           (i) => i.Name === supplementName
         );
         //make copy of supplement entry and update UnitsTaken with response from server
         const updatedSupplementEntry = {
           ...supplementEntry,
-          DosagesTaken: returnedSupplement,
+          DosagesTaken: returnedUnitsTaken,
         };
         console.log("updatedSupplementEntry:", updatedSupplementEntry);
         console.log("BEFORE debug dashboard:", dashboard);

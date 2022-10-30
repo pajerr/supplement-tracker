@@ -8,6 +8,7 @@ const getAll = () => {
 };
 */
 
+//updates supplements UnitTaken in backend, returns updated value of UnitTaken from backend
 const addTakenUnit = (supplementName) => {
   const request = axios.post(`${baseUrl}/${supplementName}`);
   return request.then((response) => response.data);
