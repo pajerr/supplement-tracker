@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 import Dashboard from "./components/Dashboard";
 import dashboardService from "./services/Dashboard";
 import supplementService from "./services/Supplement";
-
-const DisplayMagnesium = ({ magnesium }) => {
-  return <div>{magnesium}</div>;
-};
 
 const DisplayDashboard = ({ dashboard, handleTakenUnit }) => {
   return (
@@ -34,18 +29,16 @@ const DisplayDashboard = ({ dashboard, handleTakenUnit }) => {
   );
 };
 
+/*
 const Button = ({ handleClick, text }) => {
   return <button onClick={handleClick}>{text}</button>;
 };
+*/
 
 const App = () => {
   const [newSupplement, setNewSupplement] = useState("");
-  //will be removed in future for testing only
-  const [magnesium, setMagnesium] = useState(0);
   //dashboard stores information about all supplements
   const [dashboard, setDashboard] = useState(new Array().fill(0));
-
-  const supplementName = "magnesium";
 
   //syncs changes in form field to App state
   const handleSupplementFormChange = (event) => {
@@ -58,29 +51,6 @@ const App = () => {
       setDashboard(initialDashboard);
     });
   }, []);
-  /*
-    console.log("effect");
-    axios
-      .get("http://localhost:5050/supplements/magnesium")
-      .then((response) => {
-        console.log("inside effect magnesium taken:", response.data, "units");
-        console.log("promise fulfilled");
-        setMagnesium(response.data);
-      });
-  }, []);
-  */
-  /*
-    axios.get("http://localhost:5050/dashboard").then((response) => {
-      console.log("inside effect dashboard:", response.data);
-      console.log("promise fulfilled");
-      //console.log(response.data);
-      setDashboard(response.data);
-      //iterate over map for debugging
-      const dashboardResult = dashboard.map((i) => i.name);
-      console.log("Debug print:", dashboardResult);
-    });
-  }, []);
-  */
 
   const handleTakenUnit = (supplementName) => {
     supplementService
@@ -108,7 +78,6 @@ const App = () => {
       });
   };
 
-  //<form onSubmit={handleTakenUnit}></form>
   return (
     <div>
       <h1>Supplemenents tracked:</h1>
