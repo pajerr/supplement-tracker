@@ -108,21 +108,6 @@ const App = () => {
       });
   };
 
-  const handleTakenMagnesium = (event) => {
-    event.preventDefault();
-    axios
-      .post("http://localhost:5050/supplements/magnesium")
-      .then((response) => {
-        console.log(response);
-      });
-
-    axios
-      .get("http://localhost:5050/supplements/magnesium")
-      .then((response) => {
-        console.log(response);
-        setMagnesium(response.data);
-      });
-  };
   //<form onSubmit={handleTakenUnit}></form>
   return (
     <div>
@@ -136,15 +121,6 @@ const App = () => {
         <input value={newSupplement} onChange={handleSupplementFormChange} />
         <button type="submit">Save</button>
       </form>
-      <h1>Magnesium taken</h1>
-      <DisplayMagnesium magnesium={magnesium} />
-      <button onClick={() => handleTakenUnit(supplementName)}>
-        Take unit test
-      </button>
-      <Button
-        handleClick={handleTakenMagnesium}
-        text="Hard coded button Take unit"
-      />
     </div>
   );
 };
