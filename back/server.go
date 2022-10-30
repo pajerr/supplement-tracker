@@ -19,8 +19,8 @@ type SupplementDataStore interface {
 
 //type for /dashboard
 type Supplement struct {
-	Name         string
-	DosagesTaken int
+	Name       string
+	UnitsTaken int
 }
 
 //consant to return correct header content-type

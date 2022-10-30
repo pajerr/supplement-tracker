@@ -42,12 +42,12 @@ func (i *InMemorySupplementStore) SetSupplementDosage(name string, dosage int) {
 	i.dosages["magnesium"] = 400
 }
 
-//listtaken functions
+//Dashboard functions
 //return supplements taken unit status from /listtaken path
 func (s *InMemorySupplementStore) GetDashboard() []Supplement {
 	var Dashboard []Supplement
-	for name, takenDosage := range s.UnitsTaken {
-		Dashboard = append(Dashboard, Supplement{name, takenDosage})
+	for Name, UnitsTaken := range s.UnitsTaken {
+		Dashboard = append(Dashboard, Supplement{Name, UnitsTaken})
 	}
 	return Dashboard
 }

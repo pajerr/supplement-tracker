@@ -3,7 +3,7 @@ const Dashboard = ({ dashboard, handleTakenUnit }) => {
   return (
     <tr>
       <li>Supplement: {dashboard.Name}</li>
-      <li>Units taken: {dashboard.DosagesTaken}</li>
+      <li>Units taken: {dashboard.UnitsTaken}</li>
       <li>
         <button onClick={() => handleTakenUnit(dashboard.Name)}>Add</button>
       </li>

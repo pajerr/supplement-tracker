@@ -92,7 +92,7 @@ const App = () => {
         //make copy of supplement entry and update UnitsTaken with response from server
         const updatedSupplementEntry = {
           ...supplementEntry,
-          DosagesTaken: returnedUnitsTaken,
+          UnitsTaken: returnedUnitsTaken,
         };
         console.log("updatedSupplementEntry:", updatedSupplementEntry);
         console.log("BEFORE debug dashboard:", dashboard);
