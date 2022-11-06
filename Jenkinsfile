@@ -8,14 +8,6 @@ pipeline {
     }
         stages {
             /*
-            stage('Checkout git') {
-                steps {
-                    git branch: 'main',
-                        credentialsId: 'github-ssh',
-                        url: 'git@github.com:pajerr/supplement-tracker'
-                }
-            }*/
-            /*
              stage('Run') {
                 steps {
                     sh "ls -l"

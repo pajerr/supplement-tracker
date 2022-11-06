@@ -1,3 +1,3 @@
 module github.com/pajerr/supplement-tracker.git
 
-go 1.17
+go 1.19
